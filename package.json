@@ -1,0 +1,21 @@
+{
+  "name": "pinterest-app",
+  "version": "1.0.0",
+  "description": "A pinterest clone for the fcc fullstack challenges",
+  "main": "index.js",
+  "scripts": {
+    "start": "node build/server/backend.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MarkoN95/Pinterest-App.git"
+  },
+  "keywords": [
+    "pinterest",
+    "mern",
+    "fcc",
+    "fullstack"
+  ],
+  "author": "MarkoN95",
+  "license": "MIT"
+}
