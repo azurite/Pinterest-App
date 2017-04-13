@@ -1,0 +1,25 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible" content="ie=edge")
+
+    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css")
+    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css")
+    title="Book-trader"
+
+    if assets && assets.styles
+      each asset in assets.styles
+        link(rel="stylesheet" href=asset)
+
+  body
+    div(id="app")!= app
+
+    if preloadedState
+      script.
+        window.__PRELOADED_STATE__ = !{JSON.stringify(preloadedState)}
+
+    if assets && assets.scripts
+      each asset in assets.scripts
+        script(type="text/javascript" src=asset)
