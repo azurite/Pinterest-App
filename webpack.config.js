@@ -25,11 +25,6 @@ const VENDORS = [
   "axios"
 ];
 
-const ADDITIONAL_NODE_EXTERNALS = [
-  "react-dom/server",
-  "async/each"
-];
-
 const common = merge(
   {
     resolve: {
@@ -81,7 +76,7 @@ const client = {
       },
       plugins.hashedModuleIds(),
       plugins.clean(path.join(PATHS.build, "client")),
-      loaders.loadJS({ include: [PATHS.app, path.join(__dirname, "models", "utils", "diff.js")] }),
+      loaders.loadJS({ include: [PATHS.app] }),
       optimize.minifyCSS({
         options: {
           discardComments: {
@@ -148,7 +143,7 @@ const server = {
         }
       },
       loaders.loadJS({ include: [PATHS.app, PATHS.server, PATHS.backend] }),
-      utils.nodeModules({ additionalModules: ADDITIONAL_NODE_EXTERNALS }),
+      utils.nodeModules(),
       dev.sourceMap({ type: "source-map" }),
       plugins.addStackTrace(),
       plugins.hmr(),
@@ -172,7 +167,7 @@ const server = {
       },
       plugins.clean(path.join(PATHS.build, "server")),
       loaders.loadJS({ include: [PATHS.app, PATHS.server, PATHS.backend] }),
-      utils.nodeModules({ additionalModules: ADDITIONAL_NODE_EXTERNALS }),
+      utils.nodeModules(),
       dev.sourceMap({ type: "source-map" }),
       plugins.addStackTrace()
     );
