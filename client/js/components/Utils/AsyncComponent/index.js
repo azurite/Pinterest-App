@@ -1,12 +1,13 @@
 const React = require("react");
-const { func, node, number } = React.PropTypes;
+const { func, node, number, string } = require("prop-types");
 const DefaultPlaceholder = require("./DefaultPlaceHolder");
 
 const AsyncComponent = React.createClass({
   propTypes: {
     Placeholder: node,
     loader: func.isRequired,
-    spinner_size: number
+    spinner_size: number,
+    height: string
   },
   getInitialState: function() {
     return { Component: null };
@@ -17,8 +18,8 @@ const AsyncComponent = React.createClass({
     });
   },
   renderPlaceHolder: function() {
-    let { Placeholder, spinner_size } = this.props;
-    return Placeholder ? <Placeholder {...this.props}/> : <DefaultPlaceholder size={spinner_size}/>;
+    let { Placeholder, spinner_size = 3, height = "400px" } = this.props;
+    return Placeholder ? <Placeholder {...this.props}/> : <DefaultPlaceholder height={height} size={spinner_size}/>;
   },
   render: function() {
     let { Component } = this.state;
