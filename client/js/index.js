@@ -2,31 +2,30 @@ const React = require("react");
 const ReactDOM = require("react-dom");
 const { AppContainer } = require("react-hot-loader");
 
-const App = require("./components/Main");
+const renderApp = require("./app");
 
-const render = (App) => {
+const render = (renderApp) => {
   if(module.hot) {
     ReactDOM.render(
       <AppContainer>
-        <App/>
+        {renderApp("client")}
       </AppContainer>,
       document.getElementById("app")
     );
   }
   else {
     ReactDOM.render(
-      <App/>,
+      renderApp("client"),
       document.getElementById("app")
     );
   }
 };
 
-render(App);
-
-
 if(module.hot) {
-  module.hot.accept("./components/Main", () => {
-    const nextRoutes = require("./components/Main");
-    render(nextRoutes);
+  module.hot.accept("./app", () => {
+    const nextApp = require("./app");
+    render(nextApp);
   });
 }
+
+render(renderApp);
