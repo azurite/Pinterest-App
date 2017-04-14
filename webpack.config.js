@@ -30,7 +30,10 @@ const common = merge(
     resolve: {
       extensions: [".js", ".jsx"]
     }
-  }
+  },
+  optimize.setFreeVariables({
+    "process.env.LAZY_LOAD": JSON.stringify(true)
+  })
 );
 
 const client = {
@@ -175,6 +178,8 @@ const server = {
 };
 
 module.exports = function(env) {
+  process.env.LAZY_LOAD = true;
+
   if(env === "development") {
     process.env.BABEL_ENV = env;
 
