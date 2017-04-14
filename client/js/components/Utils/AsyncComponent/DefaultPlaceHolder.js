@@ -7,7 +7,7 @@ const DefaultPlaceholder = function({ size }) {
   return (
     <div className={styles.defaultPlaceHolder}>
       <div className={styles.spinner}>
-        <i className={"fa fa-spinner fa-spin" + (size ? " fa-" + size + "x" : "")}></i>
+        <i className={"fa fa-spinner fa-spin" + (size ? " fa-" + size + "x" : "")}/>
       </div>
     </div>
   );
