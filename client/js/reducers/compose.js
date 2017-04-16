@@ -10,7 +10,7 @@ const composeReducers = function(reducers) {
 
   Object.keys(reducers).forEach((key) => {
     if(typeof reducers[key] !== "function") {
-      throw new TypeError("composeReducers(): reducers." + key + "is not a function");
+      throw new TypeError("composeReducers(): reducers." + key + " is not a function");
     }
   });
 

@@ -14,11 +14,11 @@ const createRequest = function() {
 };
 
 /*
- * If pagination is set to true this function will concat the old data from the revious request with the new data form the new REQUEST
+ * If pagination is set to true this function will concat the old data from the revious request with the new data form the new request
  * The user can provide a custom function via setPaginator(). Otherwise the following default is used.
  *
  * if both olddata and newdata are arrays, they are simply concatinated
- * if they are both objects the function will iterate over each property anc if both props are an array it will concatinate those
+ * if they are both objects the function will iterate over each property and if both props are an array it will concatinate those
  * otherwise the old stuff is kept and the new stuff is simply added
  */
 const default_concat = function(olddata, newdata) {
@@ -30,7 +30,7 @@ const default_concat = function(olddata, newdata) {
     if(olddata.hasOwnProperty(p)) {
       // if both datasets have the same property
       if(newdata.hasOwnProperty(p)) {
-        newdata[p] = concat(olddata[p], newdata[p]);
+        newdata[p] = default_concat(olddata[p], newdata[p]);
       }
       else {
         // if the new dataset doesn't have that property, simply keep the data of the old one
