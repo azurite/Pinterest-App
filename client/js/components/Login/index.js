@@ -49,7 +49,7 @@ const Login = React.createClass({
                 <Button
                   bsSize="large"
                   bsStyle="primary"
-                  className={styles.socialLink}
+                  className={styles.socialLink + " " + styles.githubLink}
                   block>
                   Github <i className="fa fa-github"/>
                 </Button>
