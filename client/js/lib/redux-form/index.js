@@ -52,7 +52,7 @@ const createReducer = function(form) {
   };
 };
 
-const createAction = function(form, field, value, purge) {
+const updateForm = function(form, field, value, purge) {
   if(!isString(form) || (!isString(field) && !purge)) {
     throw new TypeError("form and field have to be a string.");
   }
@@ -78,22 +78,22 @@ const purgeForm = function(form, fields) {
   return function(dispatch) {
     if(typeof fields === "undefined") {
       // purge all form fields
-      dispatch(createAction(form, null, null, true));
+      dispatch(updateForm(form, null, null, true));
     }
     else if(typeof fields === "string") {
       // purge a single form field
-      dispatch(createAction(form, fields, ""));
+      dispatch(updateForm(form, fields, ""));
     }
     else if(isArrayOfStrings(fields)) {
       // purge multiple form fields
-      dispatch(createAction(form, null, null, fields));
+      dispatch(updateForm(form, null, null, fields));
     }
   };
 };
 
 module.exports = {
   createReducer,
-  createAction,
+  updateForm,
   setActionType,
   purgeForm
 };
