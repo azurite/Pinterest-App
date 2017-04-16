@@ -9,9 +9,9 @@ const RequestButton = React.createClass({
     children: node
   },
   render: function() {
-    let { request, children } = this.props;
+    let { request, children, ...rest } = this.props;
     return(
-      <Button {...this.props} disbled={request.isPending}>
+      <Button {...rest} disabled={request.isPending}>
         {request.isPending ? "Loading..." : children}
       </Button>
     );

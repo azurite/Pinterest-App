@@ -1,7 +1,11 @@
 const React = require("react");
 const { connect } = require("react-redux");
 const { string, func } = require("prop-types");
-const { Grid, Row, Col, Form, FormGroup, FormControl, Button } = require("react-bootstrap");
+const { request } = require("../nontrivial-prop-types");
+const { Grid, Row, Col, Form, FormGroup, FormControl } = require("react-bootstrap");
+
+const RequestButton = require("../Utils/RequestButton");
+const ErrorMessage = require("../Utils/ErrorMessage");
 
 const styles = require("./styles.css");
 const { updateForm } = require("../../lib/redux-form");
@@ -13,15 +17,17 @@ const Register = React.createClass({
     password: string.isRequired,
     password_confirm: string.isRequired,
     update: func.isRequired,
-    register: func.isRequired
+    register: func.isRequired,
+    registerRequest: request
   },
   render: function() {
-    let { username, email, password, password_confirm, update, register } = this.props;
+    let { username, email, password, password_confirm, update, register, registerRequest } = this.props;
     return(
       <Grid className="mainGrid" fluid>
         <Row className={styles.registerContainer}>
           <Col md={4} sm={8} xs={10} mdOffset={4} smOffset={2} xsOffset={1}>
             <h3 className="text-center">Account Creation</h3>
+            <ErrorMessage request={registerRequest}/>
             <Form onSubmit={register}>
               <FormGroup>
                 <FormControl
@@ -59,9 +65,9 @@ const Register = React.createClass({
                   onChange={update}
                 />
               </FormGroup>
-              <Button bsStyle="primary" type="submit">
+              <RequestButton bsStyle="primary" type="submit" request={registerRequest}>
                 Register
-              </Button>
+              </RequestButton>
             </Form>
           </Col>
         </Row>
@@ -75,7 +81,8 @@ const mapStateToProps = function(state) {
     username: state.register.username,
     email: state.register.email,
     password: state.register.password,
-    password_confirm: state.register.password_confirm
+    password_confirm: state.register.password_confirm,
+    registerRequest: state.registerRequest
   };
 };
 
