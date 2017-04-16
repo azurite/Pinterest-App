@@ -4,7 +4,7 @@ const { string, func } = require("prop-types");
 const { Grid, Row, Col, Form, FormGroup, FormControl, ControlLabel, Button } = require("react-bootstrap");
 
 const styles = require("./styles.css");
-const { createAction } = require("../../lib/redux-form");
+const { updateForm } = require("../../lib/redux-form");
 
 const Login = React.createClass({
   propTypes: {
@@ -81,7 +81,7 @@ const mapStateToProps = function(state) {
 const mapDispatchToProps = function(dispatch) {
   return {
     update: function(e) {
-      dispatch(createAction("login", e.target.name, e.target.value));
+      dispatch(updateForm("login", e.target.name, e.target.value));
     },
     login: function(e) {
       e.preventDefault();
