@@ -1,10 +1,10 @@
 const React = require("react");
-const { object } = require("prop-types");
+const { request } = require("../../nontrivial-prop-types");
 const { Alert } = require("react-bootstrap");
 
 const ErrorMessage = React.createClass({
   propTypes: {
-    error: object
+    request: request
   },
   getInitialState: function() {
     return {
@@ -16,19 +16,19 @@ const ErrorMessage = React.createClass({
     for(const p in val) { return true; }
     return false;
   },
-  componentWillRecieveProps: function(nextProps) {
-    if(!this.isNonEmptyObject(this.props.error) && this.isNonEmptyObject(nextProps.error)) {
+  componentWillReceiveProps: function(nextProps) {
+    if(!this.isNonEmptyObject(this.props.request.error) && this.isNonEmptyObject(nextProps.request.error)) {
       this.setState({
         alertVisible: true
       });
     }
   },
   render: function() {
-    let { error } = this.props;
+    let { request } = this.props;
     return(
-      this.state.alertVisible && this.isNonEmptyObject(error) &&
+      this.state.alertVisible && this.isNonEmptyObject(request.error) &&
       <Alert bsStyle="danger" onDismiss={() => { this.setState({ alertVisible: false }); }}>
-        <p>{error.message}</p>
+        <p>{request.error.message}</p>
       </Alert>
     );
   }

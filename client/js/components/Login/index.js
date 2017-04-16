@@ -1,7 +1,11 @@
 const React = require("react");
 const { connect } = require("react-redux");
 const { string, func } = require("prop-types");
+const { request } = require("../nontrivial-prop-types");
 const { Grid, Row, Col, Form, FormGroup, FormControl, ControlLabel, Button } = require("react-bootstrap");
+
+const RequestButton = require("../Utils/RequestButton");
+const ErrorMessage = require("../Utils/ErrorMessage");
 
 const styles = require("./styles.css");
 const { updateForm } = require("../../lib/redux-form");
@@ -11,15 +15,17 @@ const Login = React.createClass({
     username: string.isRequired,
     password: string.isRequired,
     update: func.isRequired,
-    login: func.isRequired
+    login: func.isRequired,
+    loginRequest: request
   },
   render: function() {
-    let { username, password, update, login } = this.props;
+    let { username, password, update, login, loginRequest } = this.props;
     return(
       <Grid className="mainGrid" fluid>
         <Row className={styles.loginContainer}>
           <Col md={4} sm={8} xs={10} mdOffset={4} smOffset={2} xsOffset={1}>
             <h3 className="text-center">Native Login</h3>
+            <ErrorMessage request={loginRequest}/>
             <Form onSubmit={login}>
               <FormGroup>
                 <ControlLabel>Username</ControlLabel>
@@ -39,9 +45,9 @@ const Login = React.createClass({
                   onChange={update}
                 />
               </FormGroup>
-              <Button bsStyle="primary" type="submit">
+              <RequestButton bsStyle="primary" type="submit" request={loginRequest}>
                 Login
-              </Button>
+              </RequestButton>
             </Form>
             <div className={styles.socialLogin}>
               <h3 className={"text-center " + styles.socialLoginTitle}>Social Media Login</h3>
@@ -74,7 +80,8 @@ const Login = React.createClass({
 const mapStateToProps = function(state) {
   return {
     username: state.login.username,
-    passsword: state.login.password
+    passsword: state.login.password,
+    loginRequest: state.loginRequest
   };
 };
 

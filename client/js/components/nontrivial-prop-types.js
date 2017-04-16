@@ -5,6 +5,6 @@ module.exports = {
     isPending: T.bool.isRequired,
     success: T.bool,
     error: T.object,
-    data: T.OneOfType([T.object, T.array])
+    data: T.oneOfType([T.object, T.array])
   }).isRequired
 };
