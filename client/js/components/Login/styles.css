@@ -1,6 +1,6 @@
 .loginContainer {
   padding: 16px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+  box-shadow: 0 0 8px rgba(94, 104, 114, .8);
 }
 
 .socialLogin {
@@ -13,4 +13,9 @@
 
 .socialLink {
   margin-bottom: 8px;
+}
+
+.githubLink {
+  background-color: #24292E;
+  border-color: #24292E;
 }
