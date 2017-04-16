@@ -7,7 +7,7 @@ const lazyload = function(loader, props) {
   }
   const AsyncWrapper = React.createClass({
     render: function() {
-      return <Async loader={loader} {...props}/>;
+      return <Async loader={loader} {...props} {...this.props}/>;
     }
   });
   return AsyncWrapper;
