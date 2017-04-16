@@ -10,7 +10,7 @@ module.exports = {
     username: "",
     email: "",
     password: "",
-    passoword_confirm: ""
+    password_confirm: ""
   },
   registerRequest: createRequest()
 };
