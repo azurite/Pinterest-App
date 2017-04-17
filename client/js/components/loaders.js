@@ -20,6 +20,13 @@ const loaders = {
       });
     });
   },
+  Profile: function() {
+    return new Promise((resolve) => {
+      require.ensure([], () => {
+        resolve(require("./Profile"));
+      });
+    });
+  }
 };
 
 module.exports = loaders;
