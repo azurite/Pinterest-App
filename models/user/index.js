@@ -8,6 +8,7 @@ const User = mongoose.Schema({
   local: {
     username: { type: String, unique: true, sparse: true, trim: true },
     email: { type: String, unique: true, sparse: true, trim: true },
+    image_url: { type: String, default: "/media/dummy_image.png" },
     hash: { type: String, select: false },
     salt: { type: String, select: false }
   },
