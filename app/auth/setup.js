@@ -10,16 +10,18 @@ const setupAuthentication = function() {
   passport.use(
     new GithubStrategy({
       clientID: process.env.GITHUB_CLIENT_ID,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      passReqToCallback: true
     },
-    User.oauth("github"))
+    User.oauth("github", { allowAccountLinking: true }))
   );
   passport.use(
     new TwitterStrategy({
       consumerKey: process.env.TWITTER_CONSUMER_KEY,
-      consumerSecret: process.env.TWITTER_CONSUMER_SECRET
+      consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+      passReqToCallback: true
     },
-    User.oauth("twitter"))
+    User.oauth("twitter", { allowAccountLinking: true }))
   );
   passport.serializeUser(User.serializeUser());
   passport.deserializeUser(User.deserializeUser());

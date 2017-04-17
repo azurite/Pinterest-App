@@ -21,7 +21,8 @@ const User = mongoose.Schema({
     id: { type: String },
     username: { type: String, trim: true },
     image_url: { type: String, default: "/media/dummy_image.png" }
-  }
+  },
+  login_method: String
 });
 
 User.plugin(passwordPlugin, {
