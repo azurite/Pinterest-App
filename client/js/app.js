@@ -2,7 +2,7 @@ const React = require("react");
 const { Provider } = require("react-redux");
 const { BrowserRouter } = require("react-router-dom");
 const { StaticRouter } = require("react-router");
-const routes = require("./routes");
+const Routes = require("./routes");
 
 function renderApp(env, opt = {}) {
   switch(env) {
@@ -10,7 +10,7 @@ function renderApp(env, opt = {}) {
       return(
         <Provider store={opt.store}>
           <StaticRouter location={opt.url} context={opt.context}>
-            {routes(opt.store)}
+            <Routes/>
           </StaticRouter>
         </Provider>
       );
@@ -19,7 +19,7 @@ function renderApp(env, opt = {}) {
       return(
         <Provider store={opt.store}>
           <BrowserRouter>
-            {routes(opt.store)}
+            <Routes/>
           </BrowserRouter>
         </Provider>
       );
