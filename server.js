@@ -26,7 +26,6 @@ app.use(auth.routes());
 
 app.use(express.static(path.join(process.cwd(), "build", "client")));
 
-
 app.listen(process.env.PORT, () => {
   console.log("Server listening on port: ", process.env.PORT);
 });
