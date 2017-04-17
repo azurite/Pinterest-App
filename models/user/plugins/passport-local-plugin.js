@@ -19,7 +19,11 @@ const passportLocalPlugin = function(schema, opt) {
   schema.statics.authenticate = function() {
     const self = this;
     return function(username, password, cb) {
-      self.findOne({ [usernameField]: username })
+      self.findOneAndUpdate(
+        { [usernameField]: username },
+        { $set: { login_method: "local" } },
+        { new: true }
+      )
         .select("+" + hashField + " +" + saltField)
         .exec((err, user) => {
           if(err) {
