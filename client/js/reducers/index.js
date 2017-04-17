@@ -7,11 +7,14 @@ const loginRequest = ReduxRequest.createReducer("login");
 const register = ReduxForm.createReducer("register");
 const registerRequest = ReduxRequest.createReducer("register");
 
+const user = require("./user");
+
 const reducer = composeReducers({
   login,
   loginRequest,
   register,
-  registerRequest
+  registerRequest,
+  user
 });
 
 module.exports = reducer;

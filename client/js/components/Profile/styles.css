@@ -1,0 +1,23 @@
+.profileContainer {
+  padding: 16px;
+  box-shadow: 0 0 8px rgba(94, 104, 114, .8);
+}
+
+.tabsContainer {
+  composes: profileContainer;
+}
+
+@media(max-width: 768px) {
+  .tabsContainer {
+    composes: profileContainer;
+    margin-top: 16px;
+  }
+}
+
+.thumbnail {
+  display: block;
+  margin: 0 auto;
+  height: 180px;
+  width: 180px;
+  box-shadow: 0 0 8px rgba(94, 104, 114, .8);
+}
