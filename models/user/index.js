@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const passwordPlugin = require("./plugins/password-plugin");
 const passportLocalPlugin = require("./plugins/passport-local-plugin");
 const passportOauthPlugin = require("./plugins/passport-oauth-plugin");
+const normalizerPlugin = require("./plugins/normalizer-plugin");
 
 const User = mongoose.Schema({
   local: {
@@ -40,5 +41,9 @@ User.plugin(passportLocalPlugin, {
 });
 
 User.plugin(passportOauthPlugin);
+
+User.plugin(normalizerPlugin, {
+  loginMethods: ["local", "github", "twitter"]
+});
 
 module.exports = mongoose.model("user", User);

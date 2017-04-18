@@ -7,6 +7,7 @@ const app = express();
 
 const auth = require("./app/auth");
 const session = require("./app/session");
+const routes = require("./app/routes");
 
 if(process.env.NODE_ENV !== "production") {
   require("dotenv").config({ path: "config/.env" });
@@ -25,6 +26,7 @@ app.use(passport.session());
 app.use(auth.routes());
 
 app.use(express.static(path.join(process.cwd(), "build", "client")));
+app.use(routes());
 
 app.listen(process.env.PORT, () => {
   console.log("Server listening on port: ", process.env.PORT);

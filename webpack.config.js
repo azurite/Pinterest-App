@@ -17,12 +17,17 @@ const VENDORS = [
   "react",
   "react-dom",
   "react-router",
+  "react-router-dom",
   "react-bootstrap",
   "react-router-bootstrap",
   "redux",
   "redux-thunk",
   "react-redux",
   "axios"
+];
+
+const ADDITIONAL_MODULES = [
+  "react-dom/server"
 ];
 
 const common = merge(
@@ -103,7 +108,7 @@ const client = {
       plugins.copy([
         {
           from: PATHS.assets,
-          to: path.join(PATHS.build, "client", "client", "media")
+          to: path.join(PATHS.build, "client", "media")
         }
       ]),
       dev.sourceMap({ type: "source-map" }),
@@ -146,7 +151,7 @@ const server = {
         }
       },
       loaders.loadJS({ include: [PATHS.app, PATHS.server, PATHS.backend] }),
-      utils.nodeModules(),
+      utils.nodeModules({ additionalModles: ADDITIONAL_MODULES }),
       dev.sourceMap({ type: "source-map" }),
       plugins.addStackTrace(),
       plugins.hmr(),
@@ -170,7 +175,7 @@ const server = {
       },
       plugins.clean(path.join(PATHS.build, "server")),
       loaders.loadJS({ include: [PATHS.app, PATHS.server, PATHS.backend] }),
-      utils.nodeModules(),
+      utils.nodeModules({ additionalModles: ADDITIONAL_MODULES }),
       dev.sourceMap({ type: "source-map" }),
       plugins.addStackTrace()
     );
