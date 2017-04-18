@@ -2,6 +2,9 @@ const passport = require("passport");
 const express = require("express");
 const router = express.Router();
 
+const User = require("../../models/user");
+const validateInput = require("../validation");
+
 function ensureAuth(req, res, next) {
   if(req.isAuthenticated()) {
     return next();
@@ -30,14 +33,20 @@ module.exports = function() {
     router.delete(
       "/auth/" + provider + "/unlink",
       ensureAuth,
-      (req, res) => {
-        // unlink social account if it is not the same as req.user.login_method
+      (req, res, next) => {
+        User.unlinkOauth(req.user, provider, (err) => {
+          if(err) {
+            return next(err);
+          }
+          res.status(204).end();
+        });
       }
     );
   });
 
   router.post(
     "/auth/local/login",
+    validateInput("login"),
     passport.authenticate("local"),
     (req, res) => {
       res.send(req.user.normalize("local-profile"));
@@ -56,23 +65,50 @@ module.exports = function() {
 
   router.post(
     "/auth/local/register",
-    (req, res) => {
+    validateInput("register"),
+    (req, res, next) => {
       if(req.isAuthenticated()) {
-        // link local account only if it doesn't exist already
+        User.linkAccount(req.user, req.body, (err) => {
+          if(err) {
+            return next(err);
+          }
+          res.status(204).end();
+        });
       }
       else {
-        // register new account
+        User.register(req.body, req.body.password, (err) => {
+          if(err) {
+            return next(err);
+          }
+          next();
+        });
       }
+    },
+    passport.authenticate("local"),
+    (req, res) => {
+      res.send(req.user.normalize("local-profile"));
     }
   );
 
   router.delete(
     "/auth/local/unlink",
     ensureAuth,
-    (req, res) => {
-      // unlink local accout
+    (req, res, next) => {
+      User.unlinkAccount(req.user, (err) => {
+        if(err) {
+          return next(err);
+        }
+        res.status(204).end();
+      });
     }
   );
+
+  router.use(function(err, req, res, next) { // eslint-disable-line
+    if(err.status) {
+      res.status(err.status);
+    }
+    res.send(err);
+  });
 
   return router;
 };
