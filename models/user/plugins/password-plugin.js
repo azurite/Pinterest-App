@@ -13,8 +13,8 @@ const passwordPlugin = function(schema, opt) {
     encoding: opt.encoding || "hex"
   };
 
-  const hashField = opt.hashField;
-  const saltField = opt.saltField;
+  const hashField = opt.hashField || "hash";
+  const saltField = opt.saltField || "salt";
 
   const pbkdf2 = function(password, salt, cb) {
     if(pbkdf2DigestSupport) {

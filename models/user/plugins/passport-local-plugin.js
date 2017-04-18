@@ -1,9 +1,21 @@
+function createError(msg, opt = {}) {
+  return Object.assign(
+    {
+      error: true,
+      message: msg
+    },
+    opt
+  );
+}
+
 const passportLocalPlugin = function(schema, opt) {
 
+  const uniqueFields = opt.uniqueFields || [];
   const populateFields = opt.populateFields;
-  const usernameField = opt.usernameField;
-  const hashField = opt.hashField;
-  const saltField = opt.saltField;
+  const usernameField = opt.usernameField || "username";
+  const emailField = opt.emailField || "email";
+  const hashField = opt.hashField || "hash";
+  const saltField = opt.saltField || "salt";
 
   function setPasswordAndSave(user, password, cb) {
     user.setPassword(password, (err, user) => {
@@ -20,7 +32,7 @@ const passportLocalPlugin = function(schema, opt) {
     const self = this;
     return function(username, password, cb) {
       self.findOneAndUpdate(
-        { [usernameField]: username },
+        { [usernameField]: username.trim() },
         { $set: { login_method: "local" } },
         { new: true }
       )
@@ -42,7 +54,7 @@ const passportLocalPlugin = function(schema, opt) {
       user = new this(user);
     }
 
-    const checkForUniqueness = opt.uniqueFields.map((field) => {
+    const checkForUniqueness = uniqueFields.map((field) => {
       return { [field]: user.get(field) };
     });
 
@@ -56,10 +68,10 @@ const passportLocalPlugin = function(schema, opt) {
 
         if(existingUser) {
           let field;
-          for(let i = 0; i < opt.uniqueFields.length; i++) {
+          for(let i = 0; i < uniqueFields.length; i++) {
             field = opt.uniqueFields[i];
             if(existingUser.get(field) === user.get(field)) {
-              return cb(); // this field is already taken
+              return cb(createError("There is already a user with the same credentials."), { existingField: field });
             }
           }
         }
@@ -68,6 +80,46 @@ const passportLocalPlugin = function(schema, opt) {
     }
     else {
       setPasswordAndSave(user, password, cb);
+    }
+  };
+
+  schema.statics.linkAccount = function(currUser, newData, cb) {
+    this.fineOne({ _id: currUser._id })
+      .select("+" + hashField + " +" + saltField)
+      .exec((err, user) => {
+        if(err) {
+          return cb(err);
+        }
+
+        if(!user.get(hashField) && !user.get(saltField)) {
+          user.set(
+            usernameField,
+            newData.username
+          );
+          user.set(
+            emailField,
+            newData.email
+          );
+          user.setPassword(newData.password, cb);
+        }
+        else {
+          return cb(createError("You already have a local account linked to your current account"));
+        }
+      });
+  };
+
+  schema.statics.unlinkAccount = function(currUser, cb) {
+    if(currUser.login_method !== "local") {
+      this.findOneAndUpdate(
+        { _id: currUser._id },
+        {
+          $unset: { [usernameField]: "", [emailField]: "", [hashField]: "", [saltField]: "" }
+        },
+        cb
+      );
+    }
+    else {
+      cb(createError("You can't unlink an account you are currently logged in with"));
     }
   };
 

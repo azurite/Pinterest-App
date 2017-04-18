@@ -32,7 +32,9 @@ User.plugin(passwordPlugin, {
 });
 
 User.plugin(passportLocalPlugin, {
+  uniqueFields: ["local.username", "local.email"],
   usernameField: "local.username",
+  emailField: "local.email",
   hashField: "local.hash",
   saltField: "local.salt"
 });
