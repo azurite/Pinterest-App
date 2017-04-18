@@ -130,8 +130,9 @@ const passportLocalPlugin = function(schema, opt) {
   };
 
   schema.statics.deserializeUser = function() {
+    const self = this;
     return function(_id, cb) {
-      const query = this.findOne({ _id });
+      const query = self.findOne({ _id });
 
       if(populateFields) {
         query.populate(populateFields)

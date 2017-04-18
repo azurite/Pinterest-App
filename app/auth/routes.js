@@ -49,7 +49,7 @@ module.exports = function() {
     validateInput("login"),
     passport.authenticate("local"),
     (req, res) => {
-      res.send(req.user.normalize("local-profile"));
+      res.send(req.user.normalize());
     }
   );
 
@@ -86,7 +86,7 @@ module.exports = function() {
     },
     passport.authenticate("local"),
     (req, res) => {
-      res.send(req.user.normalize("local-profile"));
+      res.send(req.user.normalize());
     }
   );
 
