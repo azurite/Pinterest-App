@@ -9,6 +9,7 @@ const ErrorMessage = require("../Utils/ErrorMessage");
 
 const styles = require("./styles.css");
 const { updateForm } = require("../../lib/redux-form");
+const { login } = require("../../actions/ajax");
 
 const Login = React.createClass({
   propTypes: {
@@ -85,13 +86,14 @@ const mapStateToProps = function(state) {
   };
 };
 
-const mapDispatchToProps = function(dispatch) {
+const mapDispatchToProps = function(dispatch, ownProps) {
   return {
     update: function(e) {
       dispatch(updateForm("login", e.target.name, e.target.value));
     },
     login: function(e) {
       e.preventDefault();
+      dispatch(login(ownProps));
     }
   };
 };

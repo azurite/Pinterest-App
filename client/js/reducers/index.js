@@ -9,12 +9,15 @@ const registerRequest = ReduxRequest.createReducer("register");
 
 const user = require("./user");
 
+const logoutRequest = ReduxRequest.createReducer("logout");
+
 const reducer = composeReducers({
   login,
   loginRequest,
   register,
   registerRequest,
-  user
+  user,
+  logoutRequest
 });
 
 module.exports = reducer;

@@ -1,7 +1,19 @@
 let ACTION_TYPE = "REQUEST";
 
+const isType = function(target, type) {
+  return typeof target === type;
+};
+
 const isString = function(str) {
-  return typeof str === "string";
+  return isType(str, "string");
+};
+
+const isFunction = function(fn) {
+  return isType(fn, "function");
+};
+
+const isObject = function(obj) {
+  return isType(obj, "object");
 };
 
 const createRequest = function() {
@@ -46,18 +58,18 @@ let paginator;
 const namedPaginators = {};
 
 const concat = function({ olddata, newdata, name }) {
-  if(name && typeof namedPaginators[name] === "function") {
+  if(name && isFunction(namedPaginators[name])) {
     return namedPaginators[name](olddata, newdata);
   }
   return paginator ? paginator(olddata, newdata) : default_concat(olddata, newdata);
 };
 
 const setPaginator = function() {
-  if(typeof arguments[0] === "string" && typeof arguments[1] === "function") {
+  if(!isString(arguments[0]) && isFunction(arguments[1])) {
     let name = arguments[0], fn = arguments[1];
     namedPaginators[name] = fn;
   }
-  else if(typeof arguments[0] === "function") {
+  else if(isFunction(arguments[0])) {
     paginator = arguments[0];
   }
   else {
@@ -133,6 +145,7 @@ const createReducer = function(requestName) {
 const createAction = function(requestName, cmd, error, data, options = {}) {
   return {
     type: ACTION_TYPE,
+    requestName,
     cmd,
     error,
     data,
@@ -163,6 +176,72 @@ const setActionType = function(type) {
   ACTION_TYPE = type;
 };
 
+const axios = require("axios");
+
+const serializeQuery = (q) => "?" + Object.keys(q).map(key => key + "=" + q[key]).join("&");
+
+const ajax = function({ dispatch, url, method, name, body, query, onSuccess, passDataToReqObj = true, options }) {
+  let fullUrl;
+  if(["get", "post", "put", "delete"].indexOf(method) === - 1) {
+    throw new TypeError("ajax method is invalid: " + method);
+  }
+  if(!isString(name)) {
+    throw new TypeError("ajax did not recieve a request name");
+  }
+  if(!isFunction(onSuccess)) {
+    throw new TypeError("onSuccess is not a function");
+  }
+  if(query) {
+    fullUrl = url + serializeQuery(query);
+  }
+  else {
+    fullUrl = url;
+  }
+  dispatch(begin(name));
+  axios[method](fullUrl, body)
+    .then((res) => {
+      if(res.data.error) {
+        // these errors can happen due to wrong user input f.ex but technically everything went fine
+        dispatch(fail(name, res.data));
+        return;
+      }
+
+      if(passDataToReqObj) {
+        dispatch(done(name, res.data, options));
+        onSuccess(res);
+        return;
+      }
+      else {
+        dispatch(done(name));
+        onSuccess(res);
+        return;
+      }
+    })
+    .catch((err) => {
+      let displayError = {};
+      if(err.response) {
+        if(isString(err.response.data)) {
+          displayError.message = err.response.data;
+        }
+        else if(isObject(err.response.data) && isString(err.response.data.message)) {
+          displayError.message = err.response.data.message;
+        }
+        dispatch(fail(name, displayError));
+      }
+      else if(err.request) {
+        dispatch(fail(name, { message: "whops something went wrong. Please reload the page try again" }));
+      }
+      else {
+        dispatch(fail(name, { message: err.message || "Unknown error occured" }));
+
+        if(process.env.NODE_ENV !== "production") {
+          console.error("Error caught by promise:\n");
+          console.error(err);
+        }
+      }
+    });
+};
+
 module.exports = {
   createRequest,
   createReducer,
@@ -171,5 +250,6 @@ module.exports = {
   init,
   begin,
   done,
-  fail
+  fail,
+  ajax
 };

@@ -9,6 +9,7 @@ const ErrorMessage = require("../Utils/ErrorMessage");
 
 const styles = require("./styles.css");
 const { updateForm } = require("../../lib/redux-form");
+const { register } = require("../../actions/ajax");
 
 const Register = React.createClass({
   propTypes: {
@@ -86,13 +87,14 @@ const mapStateToProps = function(state) {
   };
 };
 
-const mapDispatchToProps = function(dispatch) {
+const mapDispatchToProps = function(dispatch, ownProps) {
   return {
     update: function(e) {
       dispatch(updateForm("register", e.target.name, e.target.value));
     },
     register: function(e) {
       e.preventDefault();
+      dispatch(register(ownProps));
     }
   };
 };

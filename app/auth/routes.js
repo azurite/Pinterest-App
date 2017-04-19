@@ -1,3 +1,4 @@
+const debug = require("debug")("pinterest-app");
 const passport = require("passport");
 const express = require("express");
 const router = express.Router();
@@ -76,7 +77,13 @@ module.exports = function() {
         });
       }
       else {
-        User.register(req.body, req.body.password, (err) => {
+        const info = {
+          local: {
+            username: req.body.username,
+            email: req.body.email
+          }
+        };
+        User.register(new User(info), req.body.password, (err) => {
           if(err) {
             return next(err);
           }
@@ -107,6 +114,7 @@ module.exports = function() {
     if(err.status) {
       res.status(err.status);
     }
+    debug("error: %O", err);
     res.send(err);
   });
 
