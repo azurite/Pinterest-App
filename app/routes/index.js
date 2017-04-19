@@ -6,7 +6,7 @@ const router = express.Router();
 const renderApp = require("../../client/js/app");
 const configureStore = require("../../client/js/store/configureStore");
 const initialState = require("../../client/js/store/initialState");
-const updateUser = require("../../client/js/actions/user");
+const { updateUser } = require("../../client/js/actions/user");
 
 const assets = require("./serve-bundles")({
   path: path.join(process.cwd(), "build", "client"),
