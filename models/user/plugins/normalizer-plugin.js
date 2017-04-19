@@ -15,8 +15,8 @@ const normalizerPlugin = function(schema, opt) {
 
   function normalize(schema) {
     let norm = {
-      id: this._id.toString(16),
-      login_method: this.login_method
+      id: schema._id.toString(16),
+      login_method: schema.login_method
     };
 
     norm.username = schema[schema.login_method].username;
