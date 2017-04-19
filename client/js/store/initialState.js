@@ -13,5 +13,6 @@ module.exports = {
     password_confirm: ""
   },
   registerRequest: createRequest(),
-  user: null
+  user: null,
+  logoutRequest: createRequest()
 };

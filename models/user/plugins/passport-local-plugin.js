@@ -41,6 +41,7 @@ const passportLocalPlugin = function(schema, opt) {
           if(err) {
             return cb(err);
           }
+          
           if(user) {
             return user.validatePasswod(password, cb);
           }

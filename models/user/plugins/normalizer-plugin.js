@@ -6,7 +6,18 @@ const normalizerPlugin = function(schema, opt) {
 
     opt.loginMethods.forEach((method) => {
       if(method !== curr) {
-        connected.push(method);
+        switch(method) {
+          case "local":
+            if(schema.get("local.email")) {
+              connected.push(method);
+            }
+            break;
+
+          default:
+            if(schema.get(method + ".id")) {
+              connected.push(method);
+            }
+        }
       }
     });
 

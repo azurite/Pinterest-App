@@ -8,7 +8,7 @@ const registerSchema = Joi.object().keys({
   username: username,
   email: email,
   password: password,
-  confirm_password: password
+  password_confirm: password
 });
 
 const loginSchema = Joi.object().keys({
