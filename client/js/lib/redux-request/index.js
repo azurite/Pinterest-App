@@ -43,18 +43,29 @@ const default_concat = function(olddata, newdata) {
 
 let paginator;
 
-const concat = function(olddata, newdata) {
+const namedPaginators = {};
+
+const concat = function({ olddata, newdata, name }) {
+  if(name && typeof namedPaginators[name] === "function") {
+    return namedPaginators[name](olddata, newdata);
+  }
   return paginator ? paginator(olddata, newdata) : default_concat(olddata, newdata);
 };
 
-const setPaginator = function(fn) {
-  if(typeof fn !== "function") {
-    throw new TypeError("expected fn to be a function. Instead got: " + typeof fn);
+const setPaginator = function() {
+  if(typeof arguments[0] === "string" && typeof arguments[1] === "function") {
+    let name = arguments[0], fn = arguments[1];
+    namedPaginators[name] = fn;
   }
-  paginator = fn;
+  else if(typeof arguments[0] === "function") {
+    paginator = arguments[0];
+  }
+  else {
+    throw new TypeError("setPaginator() recieved invalid input: " + arguments[0] + ", " + arguments[1]);
+  }
 };
 
-const updateRequestState = function(state, action) {
+const updateRequestState = function(state, action, requestName) {
   switch(action.cmd) {
     case "init":
       return {
@@ -77,7 +88,11 @@ const updateRequestState = function(state, action) {
         isPending: false,
         success: true,
         error: null,
-        data: action.options.paginate ? concat(state.data, action.data) : action.data
+        data: action.options.paginate ? concat({
+          olddata: state.data,
+          newdata: action.data,
+          name: requestName
+        }) : action.data
       };
 
     case "fail":
@@ -107,7 +122,7 @@ const createReducer = function(requestName) {
         if(action.requestName !== requestName) {
           return state;
         }
-        return updateRequestState(state, action);
+        return updateRequestState(state, action, requestName);
 
       default:
         return state;
