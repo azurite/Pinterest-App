@@ -114,7 +114,7 @@ const passportLocalPlugin = function(schema, opt) {
       this.findOneAndUpdate(
         { _id: currUser._id },
         {
-          $unset: { [usernameField]: "", [emailField]: "", [hashField]: "", [saltField]: "" }
+          $unset: { [usernameField]: 1, [emailField]: 1, [hashField]: 1, [saltField]: 1 }
         },
         cb
       );

@@ -1,10 +1,15 @@
 .profileContainer {
   padding: 16px;
+  margin-bottom: 16px;
   box-shadow: 0 0 8px rgba(94, 104, 114, .8);
 }
 
-.tabsContainer {
-  composes: profileContainer;
+.accountsContainer {
+  max-width: 200px;
+}
+
+.accountBtn {
+  margin-bottom: 8px;
 }
 
 @media(max-width: 768px) {

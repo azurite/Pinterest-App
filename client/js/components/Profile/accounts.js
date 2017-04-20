@@ -3,6 +3,7 @@ const { Link } = require("react-router-dom");
 const { array, string, func, bool } = require("prop-types");
 const { Button } = require("react-bootstrap");
 
+const styles = require("./styles.css");
 const titleCase = (str) => str.charAt(0).toUpperCase() + str.substr(1);
 
 const Accounts = function(props) {
@@ -22,10 +23,17 @@ const Accounts = function(props) {
     }
     if(connected_accounts.indexOf(prov) !== -1) {
       return(
-        <Button {...rest} key={"unlink_" + prov} onClick={unlink.bind(this, prov)} disabled={isClicked === prov && isPending}>
+        <Button
+          {...rest}
+          key={"unlink_" + prov}
+          onClick={unlink.bind(this, prov)}
+          disabled={(isClicked === prov) && isPending}>
           {
             (isClicked && isPending) ? "Loading..." :
-            "Unlink " + titleCase(prov) + " " + (prov !== "local" ? <i className={"fa fa-" + prov}/> : "")
+            "Unlink " + titleCase(prov) + " "
+          }
+          {
+            (prov !== "local" ? <i className={"fa fa-" + prov}/> : "")
           }
         </Button>
       );
@@ -51,7 +59,7 @@ const Accounts = function(props) {
   });
 
   return(
-    <div>
+    <div className={styles.accountsContainer}>
       {accounts}
     </div>
   );
