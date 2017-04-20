@@ -14,5 +14,9 @@ module.exports = {
   },
   registerRequest: createRequest(),
   user: null,
-  logoutRequest: createRequest()
+  logoutRequest: createRequest(),
+  unlinkAccount: {
+    request: createRequest(),
+    prov: ""
+  }
 };
