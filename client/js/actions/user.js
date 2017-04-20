@@ -7,7 +7,7 @@ module.exports = {
       user: user
     };
   },
-  linkAcount: function(account) {
+  linkAccount: function(account) {
     return {
       type: types.LINK_ACCOUNT,
       account
