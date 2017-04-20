@@ -1,5 +1,5 @@
 const React = require("react");
-const { Link } = require("react-router");
+const { Link } = require("react-router-dom");
 const { array, string, func, bool } = require("prop-types");
 const { Button } = require("react-bootstrap");
 
@@ -23,8 +23,10 @@ const Accounts = function(props) {
     if(connected_accounts.indexOf(prov) !== -1) {
       return(
         <Button {...rest} key={"unlink_" + prov} onClick={unlink.bind(this, prov)} disabled={isClicked === prov && isPending}>
-          {isClicked && isPending ? "Loading..." : "Unlink " + titleCase(prov) + " "}
-          {prov !== "local" && <i className={"fa fa-" + prov}/>}
+          {
+            (isClicked && isPending) ? "Loading..." :
+            "Unlink " + titleCase(prov) + " " + (prov !== "local" ? <i className={"fa fa-" + prov}/> : "")
+          }
         </Button>
       );
     }
