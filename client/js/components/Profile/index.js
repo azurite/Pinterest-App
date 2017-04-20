@@ -1,84 +1,26 @@
 const React = require("react");
-const { Link } = require("react-router");
-const { object, bool, string, func, node } = require("prop-types");
+const { object, bool, func, shape, string } = require("prop-types");
 const { connect } = require("react-redux");
-const { Grid, Row, Col, Image, Button } = require("react-bootstrap");
+const { Grid, Row, Col, Image } = require("react-bootstrap");
+
+const RequestButton = require("../Utils/RequestButton");
+const ErrorMessage = require("../Utils/ErrorMessage");
+const Accounts = require("./accounts");
 
 const styles = require("./styles.css");
-
-function UnlinkAccount(props) {
-  let child, { provider, unlink, ...rest } = props;
-  switch(provider) {
-    case "local":
-      child = "Unlink Local Account";
-      break;
-    case "twitter":
-      child = "Unlink Twitter Account";
-      break;
-    case "github":
-      child = "Unlink Github Account";
-      break;
-  }
-  return(
-    <Button {...rest} onClick={unlink}>
-      {child}
-    </Button>
-  );
-}
-
-UnlinkAccount.propTypes = {
-  provider: string.isRequired,
-  unlink: func.isRequired
-};
-
-function LinkAccount(props) {
-  let { provider, ...rest } = props;
-  switch(provider) {
-    case "local":
-      return(
-        <Link to="/register?linkAccount">
-          <Button {...rest}>
-            Link Local Account
-          </Button>
-        </Link>
-      );
-    case "github":
-      return(
-        <a href="/auth/github">
-          <Button {...rest}>
-            Link Github <i className="fa fa-github"/>
-          </Button>
-        </a>
-      );
-    case "twitter":
-      return(
-        <a href="/auth/twitter">
-          <Button {...rest}>
-            Link Twitter <i className="fa fa-twitter"/>
-          </Button>
-        </a>
-      );
-  }
-}
-
-LinkAccount.propTypes = {
-  provider: string.isRequired,
-};
-
-function Li(props) {
-  return(
-    <li>{props.children}</li>
-  );
-}
-
-Li.propTypes = {
-  children: node
-};
+const { request } = require("../nontrivial-prop-types");
+const { clickUnlink } = require("../../actions/user");
+const { unlink, logout } = require("../../actions/ajax");
 
 const Profile = React.createClass({
   propTypes: {
     user: object,
     isLoggedIn: bool.isRequired,
+    logoutRequest: request,
+    unlinkAccount: shape({
+      request: request,
+      prov: string
+    }),
     logout: func.isRequired,
     unlink: func.isRequired,
     history: object
@@ -88,40 +30,9 @@ const Profile = React.createClass({
       this.props.history.replace("/login");
     }
   },
-  otherAccounts: function() {
-    let { connected_accounts, login_method } = this.props.user;
-    let { unlink } = this.props;
-    let providers = ["local", "github", "twitter"];
-
-    return providers.map((provider, i) => {
-      if(provider !== login_method) {
-        if(connected_accounts.indexOf(provider) !== -1) {
-          return(
-            <UnlinkAccount
-              block
-              key={this.genKey(i)}
-              provider={provider}
-              unlink={unlink}
-            />
-          );
-        }
-        else {
-          return(
-            <LinkAccount
-              block
-              key={this.genKey(i)}
-              provider={provider}
-            />
-          );
-        }
-      }
-    }).filter(f => f);
-  },
-  genKey: function(v) {
-    return (v + Math.random() + "").substr(0, 5);
-  },
   render: function() {
-    let { user, isLoggedIn } = this.props;
+    let { user, isLoggedIn, logoutRequest, unlinkAccount, unlink, logout } = this.props;
+    let providers = ["local", "github", "twitter"];
     return(
       <Grid fluid>
         {
@@ -138,8 +49,22 @@ const Profile = React.createClass({
               {/*Pins ad add pins comes here*/}
             </Col>
             <Col md={3} sm={3} xs={12}>
-              <h4>Manage Accounts</h4>
-              {this.otherAccounts()}
+              <div className={styles.profileContainer}>
+                <h4>Manage Accounts</h4>
+                <ErrorMessage request={unlinkAccount.request}/>
+                <Accounts
+                  isPending={unlinkAccount.request.isPending}
+                  isClicked={unlinkAccount.prov}
+                  unlink={unlink}
+                  providers={providers}
+                  login_method={user.login_method}
+                  connected_accounts={user.connected_accounts}
+                />
+              </div>
+              <hr/>
+              <RequestButton bsStyle="primary" request={logoutRequest} onClick={logout}>
+                Logout
+              </RequestButton>
             </Col>
           </Row>
         }
@@ -155,17 +80,20 @@ const Profile = React.createClass({
 const mapStateToProps = function(state) {
   return {
     user: state.user || {},
-    isLoggedIn: !!state.user
+    isLoggedIn: !!state.user,
+    logoutRequest: state.logoutRequest,
+    unlinkAccount: state.unlinkAccount
   };
 };
 
-const mapDispatchToProps = function(dispatch) {
+const mapDispatchToProps = function(dispatch, ownProps) {
   return {
-    logout: function(e) {
-
+    logout: function() {
+      dispatch(logout(ownProps));
     },
-    unlink: function(e) {
-
+    unlink: function(prov) {
+      dispatch(clickUnlink(prov));
+      dispatch(unlink());
     }
   };
 };

@@ -1,3 +1,5 @@
+const debug = require("debug")("pinterest-app");
+
 function createError(msg, opt = {}) {
   return Object.assign(
     {
@@ -10,13 +12,13 @@ function createError(msg, opt = {}) {
 
 const passportOauthPlugin = function(schema) {
 
-  function update(method, profile) {
+  function update(method, curr_method, profile) {
     return {
       $set: {
         [method + ".id"]: profile.id,
         [method + ".username"]: profile.displayName,
         [method + ".image_url"]: profile.photos[0].value.replace("_normal", ""),
-        login_method: method
+        login_method: curr_method
       }
     };
   }
@@ -30,11 +32,14 @@ const passportOauthPlugin = function(schema) {
           cb(null, req.user);
         }
         else {
+
+          debug("linking profile: %O", profile);
+          
           self.findOneAndUpdate(
             {
               _id: req.user._id
             },
-            update(req.user.login_method, profile),
+            update(method, req.user.login_method, profile),
             err => cb(err, req.user)
           );
         }
@@ -44,7 +49,7 @@ const passportOauthPlugin = function(schema) {
           {
             [method + ".id"]: profile.id
           },
-          update(method, profile),
+          update(method, req.user.login_method, profile),
           {
             new: true,
             upsert: true
