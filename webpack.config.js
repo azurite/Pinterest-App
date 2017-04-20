@@ -175,7 +175,7 @@ const server = {
       },
       plugins.clean(path.join(PATHS.build, "server")),
       loaders.loadJS({ include: [PATHS.app, PATHS.server, PATHS.backend] }),
-      utils.nodeModules({ additionalModles: ADDITIONAL_MODULES }),
+      utils.nodeModules({ additionalModules: ADDITIONAL_MODULES }),
       dev.sourceMap({ type: "source-map" }),
       plugins.addStackTrace()
     );
