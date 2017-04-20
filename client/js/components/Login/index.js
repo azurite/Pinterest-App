@@ -1,6 +1,6 @@
 const React = require("react");
 const { connect } = require("react-redux");
-const { string, func } = require("prop-types");
+const { string, func, bool, object } = require("prop-types");
 const { request } = require("../nontrivial-prop-types");
 const { Grid, Row, Col, Form, FormGroup, FormControl, ControlLabel, Button } = require("react-bootstrap");
 
@@ -13,11 +13,18 @@ const { login } = require("../../actions/ajax");
 
 const Login = React.createClass({
   propTypes: {
+    isLoggedIn: bool,
     username: string.isRequired,
     password: string.isRequired,
     update: func.isRequired,
     login: func.isRequired,
-    loginRequest: request
+    loginRequest: request,
+    history: object
+  },
+  componentDidMount: function() {
+    if(this.props.isLoggedIn) {
+      this.props.history.replace("/user");
+    }
   },
   render: function() {
     let { username, password, update, login, loginRequest } = this.props;
@@ -80,6 +87,7 @@ const Login = React.createClass({
 
 const mapStateToProps = function(state) {
   return {
+    isLoggedIn: !!state.user,
     username: state.login.username,
     passsword: state.login.password,
     loginRequest: state.loginRequest

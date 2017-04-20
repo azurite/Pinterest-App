@@ -8,7 +8,8 @@ const parseQuery = (q) => {
   }
   q.split("&").map((s) => {
     let [key, value] = s.split("=");
-    query[key] = value || "";
+    value = value === "true" ? true : value === "false" ? false : value;
+    query[key] = value;
   });
   return query;
 };
