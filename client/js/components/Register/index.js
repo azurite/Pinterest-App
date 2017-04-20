@@ -1,6 +1,6 @@
 const React = require("react");
 const { connect } = require("react-redux");
-const { string, func } = require("prop-types");
+const { string, func, bool, object } = require("prop-types");
 const { request } = require("../nontrivial-prop-types");
 const { Grid, Row, Col, Form, FormGroup, FormControl } = require("react-bootstrap");
 
@@ -11,15 +11,36 @@ const styles = require("./styles.css");
 const { updateForm } = require("../../lib/redux-form");
 const { register } = require("../../actions/ajax");
 
+const parseQuery = (q) => {
+  let query = {};
+  if(q.charAt(0) === "?") {
+    q = q.substr(1);
+  }
+  q.split("&").map((s) => {
+    let [key, value] = s.split("=");
+    value = value === "true" ? true : value === "false" ? false : value;
+    query[key] = value;
+  });
+  return query;
+};
+
 const Register = React.createClass({
   propTypes: {
+    isLoggedIn: bool,
     username: string.isRequired,
     email: string.isRequired,
     password: string.isRequired,
     password_confirm: string.isRequired,
     update: func.isRequired,
     register: func.isRequired,
-    registerRequest: request
+    registerRequest: request,
+    history: object
+  },
+  componentDidMount: function() {
+    let { isLoggedIn, history } = this.props;
+    if(isLoggedIn && !(parseQuery(history.search).linkAccount === true)) {
+      history.replace("/user");
+    }
   },
   render: function() {
     let { username, email, password, password_confirm, update, register, registerRequest } = this.props;
@@ -79,6 +100,7 @@ const Register = React.createClass({
 
 const mapStateToProps = function(state) {
   return {
+    isLoggedIn: !!state.user,
     username: state.register.username,
     email: state.register.email,
     password: state.register.password,
