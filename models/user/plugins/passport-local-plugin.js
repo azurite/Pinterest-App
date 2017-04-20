@@ -41,7 +41,7 @@ const passportLocalPlugin = function(schema, opt) {
           if(err) {
             return cb(err);
           }
-          
+
           if(user) {
             return user.validatePasswod(password, cb);
           }
@@ -85,7 +85,7 @@ const passportLocalPlugin = function(schema, opt) {
   };
 
   schema.statics.linkAccount = function(currUser, newData, cb) {
-    this.fineOne({ _id: currUser._id })
+    this.findOne({ _id: currUser._id })
       .select("+" + hashField + " +" + saltField)
       .exec((err, user) => {
         if(err) {
