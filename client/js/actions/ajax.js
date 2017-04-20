@@ -78,6 +78,7 @@ module.exports = {
         name: "unlink",
         url: "/auth/" + prov + "/unlink",
         method: "delete",
+        passDataToReqObj: false,
         onSuccess: function() {
           dispatch(unlinkAccount(prov));
         }

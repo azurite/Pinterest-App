@@ -34,7 +34,7 @@ const passportOauthPlugin = function(schema) {
         else {
 
           debug("linking profile: %O", profile);
-          
+
           self.findOneAndUpdate(
             {
               _id: req.user._id
@@ -62,10 +62,16 @@ const passportOauthPlugin = function(schema) {
 
   schema.statics.unlinkOauth = function(currUser, method, cb) {
     if(currUser.login_method !== method) {
-      this.fineOneAndUpdate(
+      this.findOneAndUpdate(
         { _id: currUser._id },
         {
-          $unset: { [method + ".id"]: "", [method + ".username"]: "" }
+          $unset: {
+            [method + ".id"]: 1,
+            [method + ".username"]: 1
+          },
+          $set: {
+            [method + ".image_url"]: "/media/dummy_image.png"
+          }
         },
         cb
       );

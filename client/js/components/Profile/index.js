@@ -60,11 +60,11 @@ const Profile = React.createClass({
                   login_method={user.login_method}
                   connected_accounts={user.connected_accounts}
                 />
+                <hr/>
+                <RequestButton bsStyle="primary" request={logoutRequest} onClick={logout}>
+                  Logout
+                </RequestButton>
               </div>
-              <hr/>
-              <RequestButton bsStyle="primary" request={logoutRequest} onClick={logout}>
-                Logout
-              </RequestButton>
             </Col>
           </Row>
         }

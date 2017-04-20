@@ -23,7 +23,8 @@ const Accounts = function(props) {
     if(connected_accounts.indexOf(prov) !== -1) {
       return(
         <Button {...rest} key={"unlink_" + prov} onClick={unlink.bind(this, prov)} disabled={isClicked === prov && isPending}>
-          {isClicked && isPending ? "Loading..." : "Unlink " + titleCase(prov)}
+          {isClicked && isPending ? "Loading..." : "Unlink " + titleCase(prov) + " "}
+          {prov !== "local" && <i className={"fa fa-" + prov}/>}
         </Button>
       );
     }
