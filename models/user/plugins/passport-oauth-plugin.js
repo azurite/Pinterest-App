@@ -49,7 +49,7 @@ const passportOauthPlugin = function(schema) {
           {
             [method + ".id"]: profile.id
           },
-          update(method, req.user.login_method, profile),
+          update(method, method, profile),
           {
             new: true,
             upsert: true
