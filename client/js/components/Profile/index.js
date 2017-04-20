@@ -53,12 +53,15 @@ const Profile = React.createClass({
                 <h4>Manage Accounts</h4>
                 <ErrorMessage request={unlinkAccount.request}/>
                 <Accounts
-                  isPending={unlinkAccount.request.isPending}
-                  isClicked={unlinkAccount.prov}
-                  unlink={unlink}
-                  providers={providers}
-                  login_method={user.login_method}
                   connected_accounts={user.connected_accounts}
+                  isPending={unlinkAccount.request.isPending}
+                  login_method={user.login_method}
+                  isClicked={unlinkAccount.prov}
+                  className={styles.accountBtn}
+                  bsStyle="primary"
+                  providers={providers}
+                  unlink={unlink}
+                  block
                 />
                 <hr/>
                 <RequestButton bsStyle="primary" request={logoutRequest} onClick={logout}>
