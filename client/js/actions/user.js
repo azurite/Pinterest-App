@@ -24,5 +24,17 @@ module.exports = {
       type: types.CLICK_UNLINK,
       prov
     };
+  },
+  removePin: function(pinId) {
+    return {
+      type: types.REMOVE_PIN,
+      pinId
+    };
+  },
+  clickRemovePin: function(pinId) {
+    return {
+      type: types.CLICK_REMOVE_PIN,
+      pinId
+    };
   }
 };

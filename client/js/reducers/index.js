@@ -19,6 +19,13 @@ const unlinkAccount = composeReducers({
   prov: (state, action) => action.type === types.CLICK_UNLINK ? action.prov : state
 });
 
+const removePinRequest = ReduxRequest.createReducer("remove-pin");
+
+const removePin = composeReducers({
+  request: removePinRequest,
+  pinId: (state, action) => action.type === types.CLICK_REMOVE_PIN ? action.pinId: state
+});
+
 const reducer = composeReducers({
   login,
   loginRequest,
@@ -26,7 +33,8 @@ const reducer = composeReducers({
   registerRequest,
   user,
   logoutRequest,
-  unlinkAccount
+  unlinkAccount,
+  removePin
 });
 
 module.exports = reducer;

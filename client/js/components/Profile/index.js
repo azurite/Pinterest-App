@@ -2,15 +2,23 @@ const React = require("react");
 const { object, bool, func, shape, string } = require("prop-types");
 const { connect } = require("react-redux");
 const { Grid, Row, Col, Image } = require("react-bootstrap");
+const Masonry = require("react-masonry-component");
 
 const RequestButton = require("../Utils/RequestButton");
 const ErrorMessage = require("../Utils/ErrorMessage");
 const Accounts = require("./accounts");
+const Pin = require("../Pin");
 
 const styles = require("./styles.css");
 const { request } = require("../nontrivial-prop-types");
-const { clickUnlink } = require("../../actions/user");
-const { unlink, logout } = require("../../actions/ajax");
+const { clickUnlink, clickRemovePin } = require("../../actions/user");
+const { unlink, logout, removePin } = require("../../actions/ajax");
+
+const pinStyles = require("../Pin/styles.css");
+const masonryOptions = {
+  itemSelector: "." + pinStyles.pinContainer,
+  columnWidth: 100
+};
 
 const Profile = React.createClass({
   propTypes: {
@@ -23,6 +31,11 @@ const Profile = React.createClass({
     }),
     logout: func.isRequired,
     unlink: func.isRequired,
+    removePin: shape({
+      request: request,
+      pinId: string
+    }),
+    remove: func.isRequired,
     history: object
   },
   componentDidMount: function() {
@@ -31,24 +44,21 @@ const Profile = React.createClass({
     }
   },
   render: function() {
-    let { user, isLoggedIn, logoutRequest, unlinkAccount, unlink, logout } = this.props;
+    let { user, isLoggedIn, logoutRequest, unlinkAccount, unlink, logout, removePin, remove } = this.props;
     let providers = ["local", "github", "twitter"];
     return(
       <Grid fluid>
         {
           isLoggedIn &&
           <Row>
-            <Col md={4} sm={4} xs={12}>
+            <Col md={6} sm={6} xs={12}>
               <div className={styles.profileContainer}>
                 <Image className={styles.thumbnail} src={user.image_url} circle responsive/>
                 <h3 className="text-center">{user.username}</h3>
                 <hr/>
               </div>
             </Col>
-            <Col md={5} sm={5} xs={12}>
-              {/*Pins ad add pins comes here*/}
-            </Col>
-            <Col md={3} sm={3} xs={12}>
+            <Col md={6} sm={6} xs={12}>
               <div className={styles.profileContainer}>
                 <h4>Manage Accounts</h4>
                 <ErrorMessage request={unlinkAccount.request}/>
@@ -69,6 +79,22 @@ const Profile = React.createClass({
                 </RequestButton>
               </div>
             </Col>
+            <Col md={12} sm={12} xs={12}>
+              <Masonry options={masonryOptions}>
+                {
+                  user.pins.map((pin) => {
+                    return(
+                      <Pin
+                        spinner={removePin.request.isPending && removePin.pinId === pin.id}
+                        remove={remove}
+                        key={pin.id}
+                        data={pin}
+                      />
+                    );
+                  })
+                }
+              </Masonry>
+            </Col>
           </Row>
         }
         {
@@ -85,7 +111,8 @@ const mapStateToProps = function(state) {
     user: state.user || {},
     isLoggedIn: !!state.user,
     logoutRequest: state.logoutRequest,
-    unlinkAccount: state.unlinkAccount
+    unlinkAccount: state.unlinkAccount,
+    removePin: state.removePin
   };
 };
 
@@ -97,6 +124,10 @@ const mapDispatchToProps = function(dispatch, ownProps) {
     unlink: function(prov) {
       dispatch(clickUnlink(prov));
       dispatch(unlink());
+    },
+    remove: function(pinId) {
+      dispatch(clickRemovePin(pinId));
+      dispatch(removePin());
     }
   };
 };

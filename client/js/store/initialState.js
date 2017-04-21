@@ -18,5 +18,9 @@ module.exports = {
   unlinkAccount: {
     request: createRequest(),
     prov: ""
+  },
+  removePin: {
+    request: createRequest(),
+    pinId: ""
   }
 };
