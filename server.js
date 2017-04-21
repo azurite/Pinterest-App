@@ -8,6 +8,7 @@ const app = express();
 const auth = require("./app/auth");
 const session = require("./app/session");
 const routes = require("./app/routes");
+const api = require("./app/api");
 
 if(process.env.NODE_ENV !== "production") {
   require("dotenv").config({ path: "config/.env" });
@@ -24,6 +25,7 @@ app.use(session());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(auth.routes());
+app.use(api());
 
 app.use(express.static(path.join(process.cwd(), "build", "client")));
 app.use(routes());

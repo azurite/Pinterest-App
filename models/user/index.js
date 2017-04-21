@@ -1,3 +1,4 @@
+require("../pin");
 const mongoose = require("mongoose");
 
 const passwordPlugin = require("./plugins/password-plugin");
@@ -23,7 +24,19 @@ const User = mongoose.Schema({
     username: { type: String, trim: true },
     image_url: { type: String, default: "/media/dummy_image.png" }
   },
-  login_method: String
+  login_method: String,
+  pins: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "pin"
+    }
+  ],
+  liked_pins: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "pin"
+    }
+  ]
 });
 
 User.plugin(passwordPlugin, {
