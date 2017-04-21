@@ -61,7 +61,8 @@ const client = {
         port: process.env.PORT,
         proxy: {
           "/api": "http://localhost:8124",
-          "/auth": "http://localhost:8124"
+          "/auth": "http://localhost:8124",
+          "/media": "http://localhost:8124"
         }
       }),
       loaders.loadCSS({ include: PATHS.client }),
