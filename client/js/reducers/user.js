@@ -14,7 +14,12 @@ const user = function(state, action) {
       return Object.assign({}, state, {
         connected_accounts: state.connected_accounts.filter(a => a !== action.account)
       });
-      
+
+    case types.REMOVE_PIN:
+      return Object.assign({}, state, {
+        pins: state.pins.filter(pinId => pinId !== action.pinId)
+      });
+
     default:
       return state;
   }

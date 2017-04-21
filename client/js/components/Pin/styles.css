@@ -1,0 +1,30 @@
+.pinContainer {
+  box-sizing: border-box;
+  padding: 4px;
+  margin: 8px;
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(94, 104, 114, .8);
+}
+
+.descContainer {
+  box-sizing: border-box;
+  margin: 8px;
+}
+
+.pinImage {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pointer:hover {
+  cursor: pointer;
+}
+
+.liked {
+  color: #EA0909;
+}
+
+.clear {
+  clear: both;
+}

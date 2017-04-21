@@ -1,5 +1,5 @@
 const { ajax } = require("../lib/redux-request");
-const { updateUser, linkAccount, unlinkAccount } = require("./user");
+const { updateUser, linkAccount, unlinkAccount, removePin } = require("./user");
 
 const parseQuery = (q) => {
   let query = {};
@@ -82,6 +82,22 @@ module.exports = {
         passDataToReqObj: false,
         onSuccess: function() {
           dispatch(unlinkAccount(prov));
+        }
+      });
+    };
+  },
+  removePin: function() {
+    return function(dispatch, getState) {
+      let pinId = getState().removePin.pinId;
+      ajax({
+        dispatch,
+        name: "remove-pin",
+        url: "/api/pins/delete",
+        query: { id: pinId },
+        method: "delete",
+        passDataToReqObj: false,
+        onSuccess: function() {
+          dispatch(removePin(pinId));
         }
       });
     };
