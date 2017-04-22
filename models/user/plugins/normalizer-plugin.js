@@ -25,13 +25,10 @@ const normalizerPlugin = function(schema, opt) {
   }
 
   function normalize(schema) {
-
-    // TODO map through the pins and liked pins to return (_id --> id)
-
     let norm = {
       id: schema._id.toString(16),
       login_method: schema.login_method,
-      pins: schema.pins,
+      pins: schema.pins.map(pin => pin.normalize()),
       liked_pins: schema.liked_pins
     };
 
