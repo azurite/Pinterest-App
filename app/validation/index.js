@@ -1,6 +1,6 @@
 const Joi = require("joi");
 const debug = require("debug")("pinterest-app");
-const { loginSchema, registerSchema, pinUploadSchema, pinActionSchema } = require("./schemas");
+const { loginSchema, registerSchema, pinUploadSchema, pinActionSchema, pinWallSchema } = require("./schemas");
 
 function createError(msg, opt = {}) {
   return Object.assign(
@@ -73,6 +73,19 @@ module.exports = function validateInput(_for, target) {
           }
           next();
         });
+        break;
+
+      case "pinwall":
+        Joi.validate(req.query, pinWallSchema, (err) => {
+          if(err) {
+
+            debug("invalid pinwall input: %s", err.details[0].message);
+
+            return next(createError(err.details[0].message));
+          }
+          next();
+        });
+        break;
     }
   };
 };

@@ -1,5 +1,6 @@
 const { ajax } = require("../lib/redux-request");
 const { updateUser, linkAccount, unlinkAccount, removePin, addPin } = require("./user");
+const { incrPage } = require("./pinwall");
 
 const parseQuery = (q) => {
   let query = {};
@@ -113,6 +114,37 @@ module.exports = {
         passDataToReqObj: false,
         onSuccess: function(res) {
           dispatch(addPin(res.data));
+        }
+      });
+    };
+  },
+  pinwall: function() {
+    return function(dispatch, getState) {
+      let pinwall = getState().pinwall;
+      let data = pinwall.request.data;
+      let chunkSize = 20;
+
+      if(pinwall.request.isPending) {
+        return;
+      }
+
+      // there is no more data on the server
+      if(data && (data.totalResults <= pinwall.page * chunkSize)) {
+        return;
+      }
+
+      ajax({
+        dispatch,
+        name: "pinwall",
+        url: "/api/pins/pinwall",
+        method: "get",
+        query: {
+          offset: pinwall.page,
+          chunkSize: chunkSize
+        },
+        options: { paginate: true },
+        onSuccess: function() {
+          dispatch(incrPage());
         }
       });
     };

@@ -1,6 +1,10 @@
 const { createRequest } = require("../lib/redux-request");
 
 module.exports = {
+  pinwall: {
+    request: createRequest(),
+    page: 0
+  },
   login: {
     username: "",
     password: ""

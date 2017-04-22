@@ -38,15 +38,17 @@ const default_concat = function(olddata, newdata) {
     return olddata.concat(newdata);
   }
 
-  for(const p in olddata) {
-    if(olddata.hasOwnProperty(p)) {
-      // if both datasets have the same property
-      if(newdata.hasOwnProperty(p)) {
-        newdata[p] = default_concat(olddata[p], newdata[p]);
-      }
-      else {
-        // if the new dataset doesn't have that property, simply keep the data of the old one
-        newdata[p] = olddata[p];
+  if(isObject(olddata)) {
+    for(const p in olddata) {
+      if(olddata.hasOwnProperty(p)) {
+        // if both datasets have the same property
+        if(newdata.hasOwnProperty(p)) {
+          newdata[p] = default_concat(olddata[p], newdata[p]);
+        }
+        else {
+          // if the new dataset doesn't have that property, simply keep the data of the old one
+          newdata[p] = olddata[p];
+        }
       }
     }
   }
