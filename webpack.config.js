@@ -20,6 +20,7 @@ const VENDORS = [
   "react-router-dom",
   "react-bootstrap",
   "react-router-bootstrap",
+  "react-masonry-component",
   "redux",
   "redux-thunk",
   "react-redux",
@@ -152,7 +153,7 @@ const server = {
         }
       },
       loaders.loadJS({ include: [PATHS.app, PATHS.server, PATHS.backend] }),
-      utils.nodeModules({ additionalModles: ADDITIONAL_MODULES }),
+      utils.nodeModules({ additionalModules: ADDITIONAL_MODULES }),
       dev.sourceMap({ type: "source-map" }),
       plugins.addStackTrace(),
       plugins.hmr(),
