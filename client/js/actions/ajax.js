@@ -118,16 +118,19 @@ module.exports = {
       });
     };
   },
-  pinwall: function() {
+  pinwall: function(ownProps) {
     return function(dispatch, getState) {
       let pinwall = getState().pinwall;
       let data = pinwall.request.data;
       let chunkSize = 20;
 
+      //only load if the user looks at the pinwall
+      if(ownProps.location.pathname !== "/") {
+        return;
+      }
       if(pinwall.request.isPending) {
         return;
       }
-
       // there is no more data on the server
       if(data && (data.totalResults <= pinwall.page * chunkSize)) {
         return;
