@@ -22,5 +22,12 @@ module.exports = {
   removePin: {
     request: createRequest(),
     pinId: ""
+  },
+  addPin: {
+    request: createRequest(),
+    pin: {
+      image_url: "",
+      description: ""
+    }
   }
 };

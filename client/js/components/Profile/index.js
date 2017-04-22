@@ -7,12 +7,14 @@ const Masonry = require("react-masonry-component");
 const RequestButton = require("../Utils/RequestButton");
 const ErrorMessage = require("../Utils/ErrorMessage");
 const Accounts = require("./accounts");
+const AddPin = require("./add-pin");
 const Pin = require("../Pin");
 
 const styles = require("./styles.css");
 const { request } = require("../nontrivial-prop-types");
 const { clickUnlink, clickRemovePin } = require("../../actions/user");
-const { unlink, logout, removePin } = require("../../actions/ajax");
+const { unlink, logout, removePin, addPin } = require("../../actions/ajax");
+const { updateForm } = require("../../lib/redux-form");
 
 const pinStyles = require("../Pin/styles.css");
 const masonryOptions = {
@@ -35,6 +37,12 @@ const Profile = React.createClass({
       request: request,
       pinId: string
     }),
+    addPin: shape({
+      request: request,
+      pin: object.isRequired
+    }),
+    add: func.isRequired,
+    update: func.isRequired,
     remove: func.isRequired,
     history: object
   },
@@ -44,7 +52,7 @@ const Profile = React.createClass({
     }
   },
   render: function() {
-    let { user, isLoggedIn, logoutRequest, unlinkAccount, unlink, logout, removePin, remove } = this.props;
+    let { user, isLoggedIn, logoutRequest, unlinkAccount, unlink, logout, removePin, remove, addPin, add, update } = this.props;
     let providers = ["local", "github", "twitter"];
     return(
       <Grid fluid>
@@ -56,6 +64,13 @@ const Profile = React.createClass({
                 <Image className={styles.thumbnail} src={user.image_url} circle responsive/>
                 <h3 className="text-center">{user.username}</h3>
                 <hr/>
+                <AddPin
+                  image_url={addPin.pin.image_url}
+                  description={addPin.pin.description}
+                  request={addPin.request}
+                  add={add}
+                  update={update}
+                />
               </div>
             </Col>
             <Col md={6} sm={6} xs={12}>
@@ -112,7 +127,8 @@ const mapStateToProps = function(state) {
     isLoggedIn: !!state.user,
     logoutRequest: state.logoutRequest,
     unlinkAccount: state.unlinkAccount,
-    removePin: state.removePin
+    removePin: state.removePin,
+    addPin: state.addPin
   };
 };
 
@@ -128,6 +144,13 @@ const mapDispatchToProps = function(dispatch, ownProps) {
     remove: function(pinId) {
       dispatch(clickRemovePin(pinId));
       dispatch(removePin());
+    },
+    add: function(e) {
+      e.preventDefault();
+      dispatch(addPin());
+    },
+    update: function(e) {
+      dispatch(updateForm("pin", e.target.name, e.target.value));
     }
   };
 };

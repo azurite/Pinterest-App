@@ -36,5 +36,11 @@ module.exports = {
       type: types.CLICK_REMOVE_PIN,
       pinId
     };
+  },
+  addPin: function(pin) {
+    return {
+      type: types.ADD_PIN,
+      pin
+    };
   }
 };

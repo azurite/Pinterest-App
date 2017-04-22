@@ -23,12 +23,12 @@ router.post(
       image_url: req.body.image_url,
       description: req.body.description
     };
-    
-    Pin.uploadPin(new Pin(pinInfo), req.user._id, (err) => {
+
+    Pin.uploadPin(new Pin(pinInfo), req.user._id, (err, pin) => {
       if(err) {
         return next(err);
       }
-      res.status(204).end();
+      res.json(pin.normalize());
     });
   }
 );

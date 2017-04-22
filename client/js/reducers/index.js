@@ -26,6 +26,11 @@ const removePin = composeReducers({
   pinId: (state, action) => action.type === types.CLICK_REMOVE_PIN ? action.pinId: state
 });
 
+const addPin = composeReducers({
+  request: ReduxRequest.createReducer("add-pin"),
+  pin: ReduxForm.createReducer("pin")
+});
+
 const reducer = composeReducers({
   login,
   loginRequest,
@@ -34,7 +39,8 @@ const reducer = composeReducers({
   user,
   logoutRequest,
   unlinkAccount,
-  removePin
+  removePin,
+  addPin
 });
 
 module.exports = reducer;
