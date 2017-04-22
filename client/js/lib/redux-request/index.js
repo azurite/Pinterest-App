@@ -67,7 +67,7 @@ const concat = function({ olddata, newdata, name }) {
 };
 
 const setPaginator = function() {
-  if(!isString(arguments[0]) && isFunction(arguments[1])) {
+  if(isString(arguments[0]) && isFunction(arguments[1])) {
     let name = arguments[0], fn = arguments[1];
     namedPaginators[name] = fn;
   }
