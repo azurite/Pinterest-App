@@ -75,10 +75,10 @@ const mapStateToProps = function(state) {
   };
 };
 
-const mapDispatchToProps = function(dispatch) {
+const mapDispatchToProps = function(dispatch, ownProps) {
   return {
     paginate: function() {
-      dispatch(pinwall());
+      dispatch(pinwall(ownProps));
     }
   };
 };
