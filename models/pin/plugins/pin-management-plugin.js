@@ -16,7 +16,12 @@ const pinManagementPlugin = function(schema) {
         {
           $push: { pins: pin }
         },
-        cb
+        (err) => {
+          if(err) {
+            return cb(err);
+          }
+          cb(null, pin);
+        }
       );
     });
   };

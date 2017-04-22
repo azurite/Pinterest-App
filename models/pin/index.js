@@ -2,6 +2,7 @@ require("../user");
 const mongoose = require("mongoose");
 
 const pinManagementPlugin = require("./plugins/pin-management-plugin");
+const normalizerPlugin = require("./plugins/normalizer-plugin");
 
 const Pin = mongoose.Schema({
   owner: {
@@ -19,5 +20,6 @@ const Pin = mongoose.Schema({
 });
 
 Pin.plugin(pinManagementPlugin);
+Pin.plugin(normalizerPlugin);
 
 module.exports = mongoose.model("pin", Pin);

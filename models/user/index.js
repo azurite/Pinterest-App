@@ -59,4 +59,12 @@ User.plugin(normalizerPlugin, {
   loginMethods: ["local", "github", "twitter"]
 });
 
+function autoPopulate(next) {
+  this.populate("pins");
+  next();
+}
+
+User.pre("findOne", autoPopulate);
+User.pre("findOneAndUpdate", autoPopulate);
+
 module.exports = mongoose.model("user", User);
