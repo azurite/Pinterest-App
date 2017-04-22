@@ -19,7 +19,7 @@ const { updateForm } = require("../../lib/redux-form");
 const pinStyles = require("../Pin/styles.css");
 const masonryOptions = {
   itemSelector: "." + pinStyles.pinContainer,
-  columnWidth: 100
+  columnWidth: 200
 };
 
 const Profile = React.createClass({
