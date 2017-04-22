@@ -17,7 +17,12 @@ const user = function(state, action) {
 
     case types.REMOVE_PIN:
       return Object.assign({}, state, {
-        pins: state.pins.filter(pinId => pinId !== action.pinId)
+        pins: state.pins.filter(pin => pin.id !== action.pinId)
+      });
+
+    case types.ADD_PIN:
+      return Object.assign({}, state, {
+        pins: state.pins.concat([action.pin])
       });
 
     default:

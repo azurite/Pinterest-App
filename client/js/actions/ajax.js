@@ -1,5 +1,5 @@
 const { ajax } = require("../lib/redux-request");
-const { updateUser, linkAccount, unlinkAccount, removePin } = require("./user");
+const { updateUser, linkAccount, unlinkAccount, removePin, addPin } = require("./user");
 
 const parseQuery = (q) => {
   let query = {};
@@ -98,6 +98,21 @@ module.exports = {
         passDataToReqObj: false,
         onSuccess: function() {
           dispatch(removePin(pinId));
+        }
+      });
+    };
+  },
+  addPin: function() {
+    return function(dispatch, getState) {
+      ajax({
+        dispatch,
+        name: "add-pin",
+        url: "/api/pins/upload",
+        body: getState().addPin.pin,
+        method: "post",
+        passDataToReqObj: false,
+        onSuccess: function(res) {
+          dispatch(addPin(res.data));
         }
       });
     };
