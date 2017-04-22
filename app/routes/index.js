@@ -15,6 +15,11 @@ const assets = require("./serve-bundles")({
   }
 });
 
+// since req.user is not a plain JS object on the server but redux only accepts plain JS object
+function toPlainObject(o) {
+  return JSON.parse(JSON.stringify(o));
+}
+
 router.get("*", (req, res) => {
   const store = configureStore(initialState);
   const options = {
@@ -24,7 +29,7 @@ router.get("*", (req, res) => {
   };
 
   if(req.isAuthenticated()) {
-    store.dispatch(updateUser(req.user.normalize()));
+    store.dispatch(updateUser(toPlainObject(req.user.normalize())));
   }
 
   const html = renderToString(
