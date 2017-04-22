@@ -15,12 +15,7 @@ const { request } = require("../nontrivial-prop-types");
 const { clickUnlink, clickRemovePin } = require("../../actions/user");
 const { unlink, logout, removePin, addPin } = require("../../actions/ajax");
 const { updateForm } = require("../../lib/redux-form");
-
-const pinStyles = require("../Pin/styles.css");
-const masonryOptions = {
-  itemSelector: "." + pinStyles.pinContainer,
-  columnWidth: 200
-};
+const masonryOptions = require("../masonry-options");
 
 const Profile = React.createClass({
   propTypes: {

@@ -26,9 +26,15 @@ const pinActionSchema = Joi.object().keys({
   id: objectId
 });
 
+const pinWallSchema = Joi.object().keys({
+  offset: Joi.number().required(),
+  chunkSize: Joi.number().required()
+});
+
 module.exports = {
   registerSchema,
   loginSchema,
   pinUploadSchema,
-  pinActionSchema
+  pinActionSchema,
+  pinWallSchema
 };

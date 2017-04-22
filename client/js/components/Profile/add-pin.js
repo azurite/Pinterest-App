@@ -24,7 +24,7 @@ const AddPin = React.createClass({
     this.setState({ show_modal: false });
   },
   componentWillReceiveProps: function(nextProps) {
-    if(nextProps.request.success === true) {
+    if(!this.props.request.success && nextProps.request.success === true) {
       this.close();
     }
   },

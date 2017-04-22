@@ -75,6 +75,21 @@ router.delete(
   }
 );
 
+router.get(
+  "/api/pins/pinwall",
+  validateInput("pinwall"),
+  (req, res, next) => {
+    Pin.paginate(req.query, (err, result) => {
+      if(err) {
+        return next(err);
+      }
+      result.items = result.items.map(pin => pin.normalize());
+
+      res.json(result);
+    });
+  }
+);
+
 router.use(function(err, req, res, next) { // eslint-disable-line
   if(err.status) {
     res.status(err.status);

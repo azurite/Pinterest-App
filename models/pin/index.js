@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 
 const pinManagementPlugin = require("./plugins/pin-management-plugin");
 const normalizerPlugin = require("./plugins/normalizer-plugin");
+const paginationPlugin = require("../common/pagination-plugin");
 
 const Pin = mongoose.Schema({
   owner: {
@@ -21,5 +22,6 @@ const Pin = mongoose.Schema({
 
 Pin.plugin(pinManagementPlugin);
 Pin.plugin(normalizerPlugin);
+Pin.plugin(paginationPlugin);
 
 module.exports = mongoose.model("pin", Pin);
