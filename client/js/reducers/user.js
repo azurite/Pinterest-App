@@ -1,5 +1,6 @@
 const types = require("../actions/types");
 
+// state is the user object in this case
 const user = function(state, action) {
   switch(action.type) {
     case types.UPDATE_USER:
@@ -23,6 +24,32 @@ const user = function(state, action) {
     case types.ADD_PIN:
       return Object.assign({}, state, {
         pins: state.pins.concat([action.pin])
+      });
+
+    case types.LIKE_PIN:
+      return Object.assign({}, state, {
+        pins: state.pins.map((pin) => {
+          if(pin.id === action.pinId) {
+            return Object.assign({}, pin, {
+              liked_by: pin.liked_by.concat([state.id])
+            });
+          }
+          return pin;
+        }),
+        liked_pins: state.liked_pins.concat([action.pinId])
+      });
+
+    case types.UNLIKE_PIN:
+      return Object.assign({}, state, {
+        pins: state.pins.map((pin) => {
+          if(pin.id === action.pinId) {
+            return Object.assign({}, pin, {
+              liked_by: pin.liked_by.filter(id => id !== state.id)
+            });
+          }
+          return pin;
+        }),
+        liked_pins: state.liked_pins.filter(pinId => pinId !== action.pinId)
       });
 
     default:

@@ -4,8 +4,11 @@ const composeReducers = require("./compose");
 
 const types = require("../actions/types");
 
+const likeUnlikePin = ReduxRequest.createReducer("like-unlike-pin");
+
 const pinwall = composeReducers({
   request: ReduxRequest.createReducer("pinwall"),
+  data: require("./pinwall"),
   page: (p, action) => action.type === types.INCR_PAGE ? ++p : p
 });
 
@@ -35,6 +38,7 @@ const addPin = composeReducers({
 });
 
 const reducer = composeReducers({
+  likeUnlikePin,
   pinwall,
   login,
   loginRequest,

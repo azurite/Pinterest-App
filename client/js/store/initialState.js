@@ -1,8 +1,13 @@
 const { createRequest } = require("../lib/redux-request");
 
 module.exports = {
+  likeUnlikePin: createRequest(),
   pinwall: {
     request: createRequest(),
+    data: {
+      totalResults: null,
+      items: []
+    },
     page: 0
   },
   login: {
