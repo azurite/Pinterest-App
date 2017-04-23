@@ -10,7 +10,7 @@ const Pin = require("../Pin");
 
 const styles = require("./styles.css");
 const masonryOptions = require("../masonry-options");
-const { callOnce, debounce } = require("../../lib/tools");
+const { callOnce, debounce, pageBottom } = require("../../lib/tools");
 const { pinwall, toggleLike } = require("../../actions/ajax");
 
 const addScrollListenerOnce = callOnce(function(listener) {
@@ -87,7 +87,9 @@ const mapStateToProps = function(state) {
 const mapDispatchToProps = function(dispatch, ownProps) {
   return {
     paginate: function() {
-      dispatch(pinwall(ownProps));
+      if(pageBottom()) {
+        dispatch(pinwall(ownProps));
+      }
     },
     toggleLike: function(action, pinId) {
       dispatch(toggleLike(action, pinId));
