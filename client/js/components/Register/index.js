@@ -8,7 +8,7 @@ const RequestButton = require("../Utils/RequestButton");
 const ErrorMessage = require("../Utils/ErrorMessage");
 
 const styles = require("./styles.css");
-const { updateForm } = require("../../lib/redux-form");
+const { updateForm, purgeForm } = require("../../lib/redux-form");
 const { register } = require("../../actions/ajax");
 
 const parseQuery = (q) => {
@@ -34,6 +34,7 @@ const Register = React.createClass({
     update: func.isRequired,
     register: func.isRequired,
     registerRequest: request,
+    cleanup: func.isRequired,
     history: object
   },
   componentDidMount: function() {
@@ -41,6 +42,9 @@ const Register = React.createClass({
     if(isLoggedIn && !(parseQuery(history.search).linkAccount === true)) {
       history.replace("/user");
     }
+  },
+  componentWillUnmount: function() {
+    this.props.cleanup();
   },
   render: function() {
     let { username, email, password, password_confirm, update, register, registerRequest } = this.props;
@@ -117,6 +121,9 @@ const mapDispatchToProps = function(dispatch, ownProps) {
     register: function(e) {
       e.preventDefault();
       dispatch(register(ownProps));
+    },
+    cleanup: function() {
+      dispatch(purgeForm("register"));
     }
   };
 };

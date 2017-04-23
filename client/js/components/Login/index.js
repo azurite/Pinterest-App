@@ -8,7 +8,7 @@ const RequestButton = require("../Utils/RequestButton");
 const ErrorMessage = require("../Utils/ErrorMessage");
 
 const styles = require("./styles.css");
-const { updateForm } = require("../../lib/redux-form");
+const { updateForm, purgeForm } = require("../../lib/redux-form");
 const { login } = require("../../actions/ajax");
 
 const Login = React.createClass({
@@ -18,6 +18,7 @@ const Login = React.createClass({
     password: string.isRequired,
     update: func.isRequired,
     login: func.isRequired,
+    cleanup: func.isRequired,
     loginRequest: request,
     history: object
   },
@@ -25,6 +26,9 @@ const Login = React.createClass({
     if(this.props.isLoggedIn) {
       this.props.history.replace("/user");
     }
+  },
+  componentWillUnmount: function() {
+    this.props.cleanup();
   },
   render: function() {
     let { username, password, update, login, loginRequest } = this.props;
@@ -102,7 +106,10 @@ const mapDispatchToProps = function(dispatch, ownProps) {
     login: function(e) {
       e.preventDefault();
       dispatch(login(ownProps));
-    }
+    },
+    cleanup: function() {
+      dispatch(purgeForm("login"));
+    },
   };
 };
 
