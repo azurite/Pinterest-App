@@ -23,11 +23,12 @@ const Register = React.createClass({
     register: func.isRequired,
     registerRequest: request,
     cleanup: func.isRequired,
-    history: object
+    history: object,
+    location: object
   },
   componentDidMount: function() {
-    let { isLoggedIn, history } = this.props;
-    if(isLoggedIn && !(parseQuery(history.search).linkAccount === true)) {
+    let { isLoggedIn, history, location } = this.props;
+    if(isLoggedIn && !(parseQuery(location.search).linkAccount === true)) {
       history.replace("/user");
     }
   },
