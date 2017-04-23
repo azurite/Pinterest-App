@@ -33,6 +33,7 @@ const normalizerPlugin = function(schema, opt) {
     };
 
     norm.username = schema[schema.login_method].username;
+    norm.image_url = schema[schema.login_method].image_url;
     if(schema.login_method === "local") {
       norm.email = schema.local.email;
     }
