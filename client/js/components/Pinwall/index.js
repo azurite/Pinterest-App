@@ -39,29 +39,27 @@ const Pinwall = React.createClass({
       <Grid className="mainGrid" fluid>
         <Row>
           <Col md={10} sm={10} xs={10} mdOffset={1} smOffset={1} xsOffset={1}>
-            <div className={styles.pinwallContainer}>
-              <ErrorMessage request={request}/>
-              <Masonry options={masonryOptions}>
-                {
-                  request.data &&
-                  request.data.items &&
-                  request.data.items.map((pin) => {
-                    return(
-                      <Pin key={pin.id} data={pin}/>
-                    );
-                  })
-                }
-              </Masonry>
+            <ErrorMessage request={request}/>
+            <Masonry options={masonryOptions} className={styles.masonryContainer}>
               {
-                !request.isPending &&
-                request.data && request.data.totalResults === 0 &&
-                <p>No results</p>
+                request.data &&
+                request.data.items &&
+                request.data.items.map((pin) => {
+                  return(
+                    <Pin key={pin.id} data={pin}/>
+                  );
+                })
               }
-              {
-                request.isPending &&
-                <i className="fa fa-spinner fa-spin fa-3x"/>
-              }
-            </div>
+            </Masonry>
+            {
+              !request.isPending &&
+              request.data && request.data.totalResults === 0 &&
+              <p>No results</p>
+            }
+            {
+              request.isPending &&
+              <i className="fa fa-spinner fa-spin fa-3x"/>
+            }
           </Col>
         </Row>
       </Grid>

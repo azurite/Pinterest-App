@@ -90,7 +90,7 @@ const Profile = React.createClass({
               </div>
             </Col>
             <Col md={12} sm={12} xs={12}>
-              <Masonry options={masonryOptions}>
+              <Masonry options={masonryOptions} className={styles.masonryContainer}>
                 {
                   user.pins.map((pin) => {
                     return(
