@@ -23,7 +23,7 @@ const user = function(state, action) {
 
     case types.ADD_PIN:
       return Object.assign({}, state, {
-        pins: state.pins.concat([action.pin])
+        pins: [action.pin].concat(state.pins)
       });
 
     case types.LIKE_PIN:

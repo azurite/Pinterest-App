@@ -28,6 +28,7 @@ module.exports = {
     request: createRequest(),
     prov: ""
   },
+  deleteAccount: createRequest(),
   removePin: {
     request: createRequest(),
     pinId: ""

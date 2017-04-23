@@ -22,6 +22,16 @@ const pinwall = function(state, action) {
         })
       });
 
+    case types.ADD_PIN:
+      return Object.assign({}, state, {
+        items: [action.pin].concat(state.items)
+      });
+
+    case types.REMOVE_PIN:
+      return Object.assign({}, state, {
+        items: state.items.filter(pin => pin.id !== action.pinId)
+      });
+
     case types.UPDATE_PINWALL:
       return Object.assign({}, state, {
         totalResults: action.data.totalResults,

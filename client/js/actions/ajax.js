@@ -184,5 +184,19 @@ module.exports = {
 
       ajax(config);
     };
+  },
+  deleteAccount: function(ownProps) {
+    return function(dispatch) {
+      ajax({
+        dispatch,
+        name: "delete-account",
+        url: "/auth/local/deleteAccount",
+        method: "delete",
+        onSuccess: function() {
+          dispatch(updateUser(null));
+          ownProps.history.push("/");
+        }
+      });
+    };
   }
 };

@@ -5,6 +5,7 @@ const passwordPlugin = require("./plugins/password-plugin");
 const passportLocalPlugin = require("./plugins/passport-local-plugin");
 const passportOauthPlugin = require("./plugins/passport-oauth-plugin");
 const normalizerPlugin = require("./plugins/normalizer-plugin");
+const deleteAccountPlugin = require("./plugins/delete-account-plugin")
 
 const User = mongoose.Schema({
   local: {
@@ -58,6 +59,8 @@ User.plugin(passportOauthPlugin);
 User.plugin(normalizerPlugin, {
   loginMethods: ["local", "github", "twitter"]
 });
+
+User.plugin(deleteAccountPlugin);
 
 function autoPopulate(next) {
   this.populate("pins");

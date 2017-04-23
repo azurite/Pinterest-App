@@ -110,6 +110,21 @@ module.exports = function() {
     }
   );
 
+  router.delete(
+    "/auth/local/deleteAccount",
+    ensureAuth,
+    (req, res, next) => {
+      User.deleteAccount(req.user._id, (err) => {
+        if(err) {
+          return next(err);
+        }
+        req.logout();
+        req.session.destroy();
+        res.status(204).end();
+      });
+    }
+  );
+
   router.use(function(err, req, res, next) { // eslint-disable-line
     if(err.status) {
       res.status(err.status);
