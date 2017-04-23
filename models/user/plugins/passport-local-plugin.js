@@ -91,7 +91,7 @@ const passportLocalPlugin = function(schema, opt) {
         if(err) {
           return cb(err);
         }
-
+        
         if(!user.get(hashField) && !user.get(saltField)) {
           user.set(
             usernameField,
@@ -101,7 +101,12 @@ const passportLocalPlugin = function(schema, opt) {
             emailField,
             newData.email
           );
-          user.setPassword(newData.password, cb);
+          user.setPassword(newData.password, (err) => {
+            if(err) {
+              return cb(err);
+            }
+            user.save(cb);
+          });
         }
         else {
           return cb(createError("You already have a local account linked to your current account"));
