@@ -2,19 +2,7 @@ const { ajax } = require("../lib/redux-request");
 const { purgeForm } = require("../lib/redux-form");
 const { updateUser, linkAccount, unlinkAccount, removePin, addPin, likePin, unlikePin } = require("./user");
 const { incrPage, updatePinwall } = require("./pinwall");
-
-const parseQuery = (q) => {
-  let query = {};
-  if(q.charAt(0) === "?") {
-    q = q.substr(1);
-  }
-  q.split("&").map((s) => {
-    let [key, value] = s.split("=");
-    value = value === "true" ? true : value === "false" ? false : value;
-    query[key] = value;
-  });
-  return query;
-};
+const { parseQuery } = require("../lib/tools");
 
 module.exports = {
   login: function(ownProps) {

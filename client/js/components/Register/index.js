@@ -10,19 +10,7 @@ const ErrorMessage = require("../Utils/ErrorMessage");
 const styles = require("./styles.css");
 const { updateForm, purgeForm } = require("../../lib/redux-form");
 const { register } = require("../../actions/ajax");
-
-const parseQuery = (q) => {
-  let query = {};
-  if(q.charAt(0) === "?") {
-    q = q.substr(1);
-  }
-  q.split("&").map((s) => {
-    let [key, value] = s.split("=");
-    value = value === "true" ? true : value === "false" ? false : value;
-    query[key] = value;
-  });
-  return query;
-};
+const { parseQuery } = require("../../lib/tools");
 
 const Register = React.createClass({
   propTypes: {
