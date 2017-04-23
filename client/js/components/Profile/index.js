@@ -13,7 +13,7 @@ const Pin = require("../Pin");
 const styles = require("./styles.css");
 const { request } = require("../nontrivial-prop-types");
 const { clickUnlink, clickRemovePin } = require("../../actions/user");
-const { unlink, logout, removePin, addPin } = require("../../actions/ajax");
+const { unlink, logout, removePin, addPin, toggleLike } = require("../../actions/ajax");
 const { updateForm } = require("../../lib/redux-form");
 const masonryOptions = require("../masonry-options");
 
@@ -36,6 +36,7 @@ const Profile = React.createClass({
       request: request,
       pin: object.isRequired
     }),
+    toggleLike: func.isRequired,
     add: func.isRequired,
     update: func.isRequired,
     remove: func.isRequired,
@@ -47,7 +48,20 @@ const Profile = React.createClass({
     }
   },
   render: function() {
-    let { user, isLoggedIn, logoutRequest, unlinkAccount, unlink, logout, removePin, remove, addPin, add, update } = this.props;
+    let {
+      user,
+      isLoggedIn,
+      logoutRequest,
+      unlinkAccount,
+      unlink,
+      logout,
+      removePin,
+      remove,
+      addPin,
+      add,
+      update,
+      toggleLike
+    } = this.props;
     let providers = ["local", "github", "twitter"];
     return(
       <Grid fluid>
@@ -95,6 +109,8 @@ const Profile = React.createClass({
                   user.pins.map((pin) => {
                     return(
                       <Pin
+                        toggleLike={toggleLike}
+                        liked={pin.liked_by.indexOf(user.id) >= 0}
                         spinner={removePin.request.isPending && removePin.pinId === pin.id}
                         remove={remove}
                         key={pin.id}
@@ -146,6 +162,9 @@ const mapDispatchToProps = function(dispatch, ownProps) {
     },
     update: function(e) {
       dispatch(updateForm("pin", e.target.name, e.target.value));
+    },
+    toggleLike: function(action, pinId) {
+      dispatch(toggleLike(action, pinId));
     }
   };
 };

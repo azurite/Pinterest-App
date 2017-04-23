@@ -42,5 +42,19 @@ module.exports = {
       type: types.ADD_PIN,
       pin
     };
+  },
+  likePin: function(pinId, likerId) {
+    return {
+      type: types.LIKE_PIN,
+      pinId,
+      likerId
+    };
+  },
+  unlikePin: function(pinId, unlikerId) {
+    return {
+      type: types.UNLIKE_PIN,
+      pinId,
+      unlikerId
+    };
   }
 };

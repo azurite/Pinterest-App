@@ -1,6 +1,6 @@
 const { ajax } = require("../lib/redux-request");
-const { updateUser, linkAccount, unlinkAccount, removePin, addPin } = require("./user");
-const { incrPage } = require("./pinwall");
+const { updateUser, linkAccount, unlinkAccount, removePin, addPin, likePin, unlikePin } = require("./user");
+const { incrPage, updatePinwall } = require("./pinwall");
 
 const parseQuery = (q) => {
   let query = {};
@@ -121,7 +121,7 @@ module.exports = {
   pinwall: function(ownProps) {
     return function(dispatch, getState) {
       let pinwall = getState().pinwall;
-      let data = pinwall.request.data;
+      let data = pinwall.data;
       let chunkSize = 20;
 
       //only load if the user looks at the pinwall
@@ -132,7 +132,7 @@ module.exports = {
         return;
       }
       // there is no more data on the server
-      if(data && (data.totalResults <= pinwall.page * chunkSize)) {
+      if(data.totalResults !== null && (data.totalResults <= pinwall.page * chunkSize)) {
         return;
       }
 
@@ -145,11 +145,44 @@ module.exports = {
           offset: pinwall.page,
           chunkSize: chunkSize
         },
+        passDataToReqObj: false,
         options: { paginate: true },
-        onSuccess: function() {
+        onSuccess: function(res) {
+          dispatch(updatePinwall(res.data));
           dispatch(incrPage());
         }
       });
+    };
+  },
+  toggleLike: function(action, pinId) {
+    return function(dispatch, getState) {
+      const id = getState().user.id;
+      const config = {
+        dispatch,
+        name: "like-unlike-pin",
+        onSuccess: f => f
+      };
+
+      switch(action) {
+        case "like":
+          dispatch(likePin(pinId, id));
+          config.url = "/api/pins/like";
+          config.method = "post";
+          config.body = { id: pinId };
+          break;
+
+        case "unlike":
+          dispatch(unlikePin(pinId, id));
+          config.url = "/api/pins/unlike";
+          config.method = "delete";
+          config.query = { id: pinId };
+          break;
+
+        default:
+          return;
+      }
+
+      ajax(config);
     };
   }
 };
