@@ -6,8 +6,8 @@ const styles = require("./styles.css");
 const DefaultPlaceholder = function({ size, height = "200px" }) {
   return (
     <div className={styles.defaultPlaceHolder} style={{ height }}>
-      <div className={styles.spinner}>
-        <i className={"fa fa-spinner fa-spin white" + (size ? " fa-" + size + "x" : "")}/>
+      <div className={styles.spinner + " white"}>
+        <i className={"fa fa-spinner fa-spin" + (size ? " fa-" + size + "x" : "")}/>
       </div>
     </div>
   );
