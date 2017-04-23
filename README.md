@@ -13,4 +13,4 @@
 * As an unauthenticated user, I can browse other users' walls of images.
 * As an authenticated user, if I upload an image that is broken, it will be replaced by a placeholder image.
 
-#### Live version coming soon...
+#### Live version running [here](https://e-terest.herokuapp.com)
