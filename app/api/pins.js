@@ -63,8 +63,8 @@ router.delete(
 
 router.delete(
   "/api/pins/unlike",
-  validateInput("pin-action", "query"),
   ensureAuth,
+  validateInput("pin-action", "query"),
   (req, res, next) => {
     Pin.unlikePin(req.query.id, req.user._id, (err) => {
       if(err) {
