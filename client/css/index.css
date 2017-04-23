@@ -1,5 +1,18 @@
+html {
+  background: url("/media/wallpaper.jpg") no-repeat center center fixed;
+  background-size: cover;
+}
+
+body {
+  background: transparent;
+}
+
 :global .mainGrid {
   margin-bottom: 50px;
   margin-left: 8px;
   margin-right: 8px;
+}
+
+.white {
+  color: #ffffff;
 }
