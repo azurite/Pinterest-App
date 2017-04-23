@@ -7,15 +7,21 @@ const Masonry = require("react-masonry-component");
 const RequestButton = require("../Utils/RequestButton");
 const ErrorMessage = require("../Utils/ErrorMessage");
 const Accounts = require("./accounts");
+const Confirm = require("./confirm");
 const AddPin = require("./add-pin");
 const Pin = require("../Pin");
 
 const styles = require("./styles.css");
 const { request } = require("../nontrivial-prop-types");
 const { clickUnlink, clickRemovePin } = require("../../actions/user");
-const { unlink, logout, removePin, addPin, toggleLike } = require("../../actions/ajax");
+const { unlink, logout, removePin, addPin, toggleLike, deleteAccount } = require("../../actions/ajax");
 const { updateForm } = require("../../lib/redux-form");
 const masonryOptions = require("../masonry-options");
+
+const confirm = {
+  title: "Are you sure ?",
+  message: "All your Pins, Hearts and connected Accounts will be gone forever"
+};
 
 const Profile = React.createClass({
   propTypes: {
@@ -26,6 +32,7 @@ const Profile = React.createClass({
       request: request,
       prov: string
     }),
+    deleteAccount: request,
     logout: func.isRequired,
     unlink: func.isRequired,
     removePin: shape({
@@ -36,6 +43,7 @@ const Profile = React.createClass({
       request: request,
       pin: object.isRequired
     }),
+    removeAccount: func.isRequired,
     toggleLike: func.isRequired,
     add: func.isRequired,
     update: func.isRequired,
@@ -53,6 +61,8 @@ const Profile = React.createClass({
       isLoggedIn,
       logoutRequest,
       unlinkAccount,
+      deleteAccount,
+      removeAccount,
       unlink,
       logout,
       removePin,
@@ -85,7 +95,6 @@ const Profile = React.createClass({
             <Col md={6} sm={6} xs={12}>
               <div className={styles.profileContainer}>
                 <h4>Manage Accounts</h4>
-                <ErrorMessage request={unlinkAccount.request}/>
                 <Accounts
                   connected_accounts={user.connected_accounts}
                   isPending={unlinkAccount.request.isPending}
@@ -97,10 +106,20 @@ const Profile = React.createClass({
                   unlink={unlink}
                   block
                 />
+                <div className={styles.accountsContainer}>
+                  <Confirm title={confirm.title} message={confirm.message} onConfirm={removeAccount}>
+                    <RequestButton bsStyle="danger" request={deleteAccount} block>
+                      Delete Account
+                    </RequestButton>
+                  </Confirm>
+                </div>
                 <hr/>
                 <RequestButton bsStyle="primary" request={logoutRequest} onClick={logout}>
                   Logout
                 </RequestButton>
+                <hr/>
+                <ErrorMessage request={unlinkAccount.request}/>
+                <ErrorMessage request={deleteAccount}/>
               </div>
             </Col>
             <Col md={12} sm={12} xs={12}>
@@ -138,6 +157,7 @@ const mapStateToProps = function(state) {
     isLoggedIn: !!state.user,
     logoutRequest: state.logoutRequest,
     unlinkAccount: state.unlinkAccount,
+    deleteAccount: state.deleteAccount,
     removePin: state.removePin,
     addPin: state.addPin
   };
@@ -165,6 +185,9 @@ const mapDispatchToProps = function(dispatch, ownProps) {
     },
     toggleLike: function(action, pinId) {
       dispatch(toggleLike(action, pinId));
+    },
+    removeAccount: function() {
+      dispatch(deleteAccount(ownProps));
     }
   };
 };

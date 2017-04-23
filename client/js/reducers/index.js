@@ -26,6 +26,8 @@ const unlinkAccount = composeReducers({
   prov: (state, action) => action.type === types.CLICK_UNLINK ? action.prov : state
 });
 
+const deleteAccount = ReduxRequest.createReducer("delete-account");
+
 const removePin = composeReducers({
   request: ReduxRequest.createReducer("remove-pin"),
   pinId: (state, action) => action.type === types.CLICK_REMOVE_PIN ? action.pinId: state
@@ -46,6 +48,7 @@ const reducer = composeReducers({
   user,
   logoutRequest,
   unlinkAccount,
+  deleteAccount,
   removePin,
   addPin
 });
