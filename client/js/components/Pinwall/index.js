@@ -61,7 +61,7 @@ const Pinwall = React.createClass({
             {
               !request.isPending &&
               data && data.totalResults === 0 &&
-              <p>No results</p>
+              <p className="text-center white">No results</p>
             }
             {
               request.isPending &&
