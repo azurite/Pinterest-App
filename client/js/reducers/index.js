@@ -12,7 +12,6 @@ const pinwall = composeReducers({
   page: (p, action) => action.type === types.INCR_PAGE ? ++p : p
 });
 
-//const pinwall = ReduxRequest.createReducer("pinwall");
 const login = ReduxForm.createReducer("login");
 const loginRequest = ReduxRequest.createReducer("login");
 const register = ReduxForm.createReducer("register");
