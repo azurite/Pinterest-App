@@ -52,7 +52,7 @@ const AddPin = React.createClass({
                 />
               </FormGroup>
               <FormGroup>
-                <ControlLabel>Description (optional)</ControlLabel>
+                <ControlLabel>Description</ControlLabel>
                 <FormControl
                   type="text"
                   name="description"

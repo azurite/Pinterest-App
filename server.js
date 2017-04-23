@@ -2,6 +2,7 @@ const path = require("path");
 const passport = require("passport");
 const logger = require("connect-logger");
 const bodyParser = require("body-parser");
+const favicon = require("serve-favicon");
 const express = require("express");
 const app = express();
 
@@ -26,7 +27,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(auth.routes());
 app.use(api());
-
+app.use(favicon(path.join(process.cwd(), "build", "client", "media", "favicon.ico")));
 app.use(express.static(path.join(process.cwd(), "build", "client")));
 app.use(routes());
 
