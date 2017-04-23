@@ -1,4 +1,5 @@
 const { ajax } = require("../lib/redux-request");
+const { purgeForm } = require("../lib/redux-form");
 const { updateUser, linkAccount, unlinkAccount, removePin, addPin, likePin, unlikePin } = require("./user");
 const { incrPage, updatePinwall } = require("./pinwall");
 
@@ -114,6 +115,7 @@ module.exports = {
         passDataToReqObj: false,
         onSuccess: function(res) {
           dispatch(addPin(res.data));
+          dispatch(purgeForm("pin"));
         }
       });
     };
