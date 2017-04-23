@@ -1,5 +1,3 @@
-.pinwallContainer {
-  text-align: center;
-  box-sizing: border-box;
-  padding: 8px;
+.masonryContainer {
+  margin: 0 auto;
 }
