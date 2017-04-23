@@ -65,8 +65,8 @@ const Pinwall = React.createClass({
             }
             {
               request.isPending &&
-              <div className="text-center">
-                <i className="fa fa-spinner fa-spin fa-3x white"/>
+              <div className="text-center white">
+                <i className="fa fa-spinner fa-spin fa-3x"/>
               </div>
             }
           </Col>
