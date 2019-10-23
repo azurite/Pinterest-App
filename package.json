@@ -72,7 +72,7 @@
     "express-session": "^1.15.2",
     "history": "^4.6.1",
     "joi": "^10.4.1",
-    "mongoose": "^4.9.5",
+    "mongoose": "^5.7.6",
     "passport": "^0.3.2",
     "passport-github": "^1.1.0",
     "passport-local": "^1.0.0",
